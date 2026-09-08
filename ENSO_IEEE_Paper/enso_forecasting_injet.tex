@@ -35,7 +35,8 @@
 \makeatother
 
 \setstretch{1.15} % body text line spacing
-
+\setlength{\parindent}{0pt} % remove paragraph indentation
+\setlength{\parskip}{0pt}
 % Tighter float/caption spacing to fit the 8-page limit without changing margins or body spacing
 \setlength{\textfloatsep}{5pt plus 1pt minus 2pt}
 \setlength{\floatsep}{3pt plus 1pt minus 1pt}
@@ -74,20 +75,22 @@ $^{1,2,3,4}$Department of Electronics and Computer Engineering, Thapathali Campu
 
 
 
-$^{\ast}$Corresponding author: sandeepkhadka527@gmail.com}
+$^{1}$biraj.080bct013@tcioe.edu.np,
+$^{2}$raman.080bct031@tcioe.edu.np,
+$^{3}$rojindhami@gmail.com,
+$^{4,\ast}$sandeepkhadka527@gmail.com
+}
 \end{center}
 
 \vspace{0.3em}
-\noindent\textbf{Abstract}
+\textbf{Abstract}
 
-\noindent{\fontsize{9}{11}\selectfont ENSO forecasts usually lose skill beyond 6--9 months because of the spring predictability barrier. This paper presents a hybrid Convolutional Neural Network--Temporal Convolutional Network (CNN-TCN) that predicts the Ni\~no 3.4 index at 3- and 6-month lead times from ERA5 and ORAS5 reanalysis fields (1980--2025). The CNN extracts spatial patterns from each monthly snapshot of the tropical Pacific, and the TCN tracks their evolution across a 12-month window without explicit feature selection. On a chronological train (1980--2018), validation (2019--2022), and test (2023--2026) split, the CNN-TCN achieves a test RMSE of 0.3781\textdegree C and Pearson correlation of 0.9474 at 3-month lead, and remains usable at 6-month lead (RMSE 0.6806\textdegree C, $r=0.8256$); a 5-member ensemble gives a mean test correlation of $0.9195\pm0.0167$. The model is compared with the stronger of two MIFS-based XGBoost baselines on the same data. That 500-feature baseline reaches test RMSE 0.5299\textdegree C and correlation 0.9207, but its training fit is much tighter than its test performance. Relative to that baseline, the CNN-TCN cuts test RMSE by 55.8\% and reduces the train-test RMSE gap by 96\%.\par}
+{\fontsize{9}{11}\selectfont ENSO forecasts usually lose skill beyond 6--9 months because of the spring predictability barrier. This paper presents a hybrid Convolutional Neural Network--Temporal Convolutional Network (CNN-TCN) that predicts the Ni\~no 3.4 index at 3- and 6-month lead times from ERA5 and ORAS5 reanalysis fields (1980--2025). The CNN extracts spatial patterns from each monthly snapshot of the tropical Pacific, and the TCN tracks their evolution across a 12-month window without explicit feature selection. On a chronological train (1980--2018), validation (2019--2022), and test (2023--2026) split, the CNN-TCN achieves a test RMSE of 0.3781\textdegree C and Pearson correlation of 0.9474 at 3-month lead, and remains usable at 6-month lead (RMSE 0.6806\textdegree C, $r=0.8256$); a 5-member ensemble gives a mean test correlation of $0.9195\pm0.0167$. The model is compared with the stronger of two MIFS-based XGBoost baselines on the same data. That 500-feature baseline reaches test RMSE 0.5299\textdegree C and correlation 0.9207, but its training fit is much tighter than its test performance. Relative to that baseline, the CNN-TCN cuts test RMSE by 55.8\% and reduces the train-test RMSE gap by 96\%.\par}
 
 \vspace{0.3em}
-\noindent\textbf{Keywords:} El Ni\~no--Southern Oscillation, ENSO, deep learning, convolutional neural network, temporal convolutional network, spatiotemporal forecasting, sea surface temperature, climate forecasting.
-
+\textit{Keywords:} \textit{climate forecasting, convolutional neural network, deep learning, El Ni\~no--Southern Oscillation, ENSO, sea surface temperature, spatiotemporal forecasting, temporal convolutional network.}
 \vspace{0.4em}
 
-\noindent The remainder of this paper is organized as follows. Section 2 reviews related work. Section 3 presents the data and preprocessing pipeline, the MIFS-XGBoost baseline, and the CNN-TCN architecture. Section 4 summarizes the experimental setup. Section 5 reports and discusses the results, and Section 6 concludes.
 
 \section{Introduction}
 
@@ -390,10 +393,11 @@ This paper presented a hybrid CNN-TCN architecture that forecasts the Ni\~no 3.4
 ERA5 and ORAS5 are available from the Copernicus Climate Data Store (\url{https://cds.climate.copernicus.eu}); the NOAA Ni\~no 3.4 index is available from the NOAA Physical Sciences Laboratory (\url{https://psl.noaa.gov}). Derived data, model weights, and code are available from the corresponding author upon reasonable request.
 
 \section*{Acknowledgements}
-The authors thank their project supervisor and the Copernicus Climate Change Service and NOAA Physical Sciences Laboratory for the ERA5, ORAS5, and Ni\~no 3.4 index data.
+The authors would like to express their sincere gratitude to their project supervisor, Asst. Prof. Kobid Karkee, for his valuable guidance, support, and constructive feedback throughout this research. The authors also acknowledge the Copernicus Climate Change Service and NOAA Physical Sciences Laboratory for providing the ERA5, ORAS5, and Ni\~no 3.4 index data used in this study.
 
 \begingroup
-\setstretch{1.5}
+\setstretch{1.15}
+
 \setlength{\itemsep}{0pt}
 \begin{thebibliography}{00}
 
