@@ -1,0 +1,3443 @@
+
+--- PAGE 1 ---
+TRIBHUVAN UNIVERSITY
+INSTITUTE OF ENGINEERING
+THAPATHALI CAMPUS
+A Project Report
+On
+AI-Enhanced Prediction of El Niño and Its Impacts on South Asian
+Monsoon Precipitation and Temperature
+Submitted By:
+Biraj Adhikari (THA080BCT013)
+Raman Shrestha (THA080BCT031)
+Rojin Dhami (THA080BCT035)
+Sandeep Khadka (THA080BCT037)
+Submitted To:
+Department of Electronics and Computer Engineering
+Thapathali Campus
+Kathmandu, Nepal
+Aug, 2026
+
+--- PAGE 2 ---
+TRIBHUVAN UNIVERSITY
+INSTITUTE OF ENGINEERING
+THAPATHALI CAMPUS
+A Project Report
+On
+AI-Enhanced Prediction of El Niño and Its Impacts on South Asian
+Monsoon Precipitation and Temperature
+Submitted By:
+Biraj Adhikari (THA080BCT013)
+Raman Shrestha (THA080BCT031)
+Rojin Dhami (THA080BCT035)
+Sandeep Khadka (THA080BCT037)
+Submitted To:
+Department of Electronics and Computer Engineering
+Thapathali Campus
+Kathmandu, Nepal
+In partial fulfillment for the award of the Bachelor’s Degree in
+Computer Engineering.
+Under the Supervision of
+Asst. Prof. Kobid Karkee
+Aug, 2026
+
+--- PAGE 3 ---
+DECLARATION
+We hereby declare that the report of the project entitled “AI-Enhanced Prediction of
+El Niño and Its Impacts on South Asian Monsoon Precipitation and Temperature”
+which is being submitted to the Department of Electronics and Computer Engineering,
+IOE, Thapathali Campus, in the partial fulfillment of the requirements for the award of
+the Degree of Bachelor of Engineering in Computer Engineering, is a bonafide report
+of the work carried out by us. The materials contained in this report have not been
+submitted to any University or Institution for the award of any degree and we are the
+only author of this complete work and no sources other than the listed here have been
+used in this work.
+Biraj Adhikari (THA080BCT013)
+Raman Shrestha (THA080BCT031)
+Rojin Dhami (THA080BCT035)
+Sandeep Khadka (THA080BCT037)
+Date: Aug, 2026
+i
+
+--- PAGE 4 ---
+CERTIFICATE OF APPROVAL
+The undersigned certify that they have read and recommend to the Department of Elec-
+tronics and Computer Engineering, IOE, Thapathali Campus, the minor project work
+entitled “AI-Enhanced Prediction of El Niño and Its Impacts on South Asian Mon-
+soon Precipitation and Temperature”, submitted by Biraj Adhikari, Raman Shrestha,
+Rojin Dhami, and Sandeep Khadka in partial fulfillment of the requirements for the
+Bachelor’s Degree in Computer Engineering. The project was carried out under super-
+vision and within the prescribed time frame.
+We found the students to be hardworking, skilled, and capable of undertaking related
+work in their field of study. Hence, we recommend the project for partial fulfillment of
+the requirements for the Bachelor’s Degree in Computer Engineering.
+Project Supervisor
+Asst. Prof. Kobid Karkee
+Department of Electronics and Computer Engineering, Thapathali Campus
+External Examiner
+Project Co-ordinator
+Asst. Prof. Anup Shrestha
+Department of Electronics and Computer Engineering, Thapathali Campus
+Head of the Department
+Mr. Umesh Kanta Ghimire
+Department of Electronics and Computer Engineering, Thapathali Campus
+Date: Aug, 2026
+ii
+
+--- PAGE 5 ---
+COPYRIGHT
+The author has agreed that the library, Department of Electronics and Computer En-
+gineering, Thapathali Campus, may make this report freely available for inspection.
+Moreover, the author has agreed that the permission for extensive copying of this project
+work for scholarly purpose may be granted by the professor/lecturer, who supervised
+the project work recorded herein or, in their absence, by the head of the department.
+It is understood that the recognition will be given to the author of this report and to
+the Department of Electronics and Computer Engineering, IOE, Thapathali Campus in
+any use of the material of this report. Copying of publication or other use of this re-
+port for financial gain without approval of the Department of Electronics and Computer
+Engineering, IOE, Thapathali Campus and author’s written permission is prohibited.
+Request for permission to copy or to make any use of the material in this project in
+whole or part should be addressed to department of Electronics and Computer Engi-
+neering, IOE, Thapathali Campus.
+iii
+
+--- PAGE 6 ---
+ACKNOWLEDGEMENT
+We express our sincere gratitude to the Department of Electronics and Computer Engi-
+neering, Thapathali Campus, for providing us the opportunity to undertake this minor
+project on “AI-Enhanced Prediction of El Niño and its Regional Climatic Impacts”
+We are deeply thankful to our project supervisor Asst. Prof. Kobid Karkee for his
+invaluable guidance, constructive feedback, and continuous encouragement throughout
+the proposal preparation and planned project work. His expertise in machine learning
+and climate modeling has been instrumental in shaping our approach and in helping us
+anticipate and address technical challenges.
+We also appreciate the support from our faculty members and peers who provided in-
+sightful suggestions during discussions on topic selection, literature review, and method-
+ology design. Special thanks go to the open-source community, especially the providers
+of the ERA5 and ORAS5 datasets, for making state-of-the-art climate reanalysis data
+easily accessible to students and researchers.
+Finally, we are grateful to our families and friends for their patience, motivation, and
+consistent support during the extended hours of study, experimentation, and documen-
+tation required for this proposal.
+Biraj Adhikari (THA080BCT013)
+Raman Shrestha (THA080BCT031)
+Rojin Dhami (THA080BCT035)
+Sandeep Khadka (THA080BCT037)
+iv
+
+--- PAGE 7 ---
+ABSTRACT
+The 2026 El Niño event is forecasted with high probability, posing significant climatic
+risks globally, particularly for South Asia’s monsoon-dependent agriculture and wa-
+ter security. This project develops a deep learning framework that forecasts the El
+Niño-Southern Oscillation (ENSO) state at lead times of 3–6 months and translates
+these predictions into deterministic impact assessments for South Asian precipitation
+and temperature anomalies. Leveraging publicly available reanalysis datasets (ERA5,
+ORAS5) and ENSO indices, the model is trained and validated on recent historical
+data (1980-2025). Our approach employs a Convolutional Neural Network – Temporal
+Convolutional Network (CNN-TCN) hybrid architecture wherein the CNN component
+captures spatial patterns (east-west SST gradients, spatial ENSO patterns across the
+tropical Pacific) from each monthly snapshot and the TCN component captures tempo-
+ral evolution (progressive warming trends, multi-month dependencies) across the 12-
+month input window. The expected outcome is a functional forecasting pipeline and a
+deterministic outlook for the June–September 2026 monsoon season, contributing ac-
+tionable insights for disaster preparedness and resource management in the South Asian
+region.
+Keywords: CNN-TCN, Deep Learning, El Niño, ENSO, Sea Surface Temperature.
+v
+
+--- PAGE 8 ---
+TABLE OF CONTENTS
+DECLARATION
+i
+CERTIFICATE OF APPROVAL
+ii
+COPYRIGHT
+iii
+ACKNOWLEDGEMENT
+iv
+ABSTRACT
+v
+LIST OF FIGURES
+x
+LIST OF TABLES
+xi
+LIST OF ABBREVIATIONS
+xii
+1
+INTRODUCTION
+1
+1.1
+Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.2
+Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.3
+Problem Statement
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.4
+Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.5
+Scope and Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.5.1
+Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.5.2
+Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.6
+Project Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+2
+LITERATURE REVIEW
+5
+2.1
+ENSO Prediction: From Dynamical Models to Deep Learning
+. . . . .
+5
+2.2
+Deep Learning Approaches for ENSO Forecasting . . . . . . . . . . . .
+5
+2.2.1
+CNN-Based Multi-Year ENSO Forecasting
+. . . . . . . . . . .
+5
+2.2.2
+Autoencoder-LSTM Hybrid Architecture . . . . . . . . . . . . .
+6
+2.2.3
+Physics-Guided Deep Echo State Networks
+. . . . . . . . . . .
+6
+2.2.4
+ResoNet: Robust and Explainable ENSO Forecasting . . . . . .
+7
+2.3
+Machine Learning for Regional Climate Impact Assessment . . . . . . .
+7
+2.3.1
+ENSO-Driven Weather Pattern Prediction . . . . . . . . . . . .
+7
+2.4
+Comparison of Existing Approaches . . . . . . . . . . . . . . . . . . .
+8
+3
+REQUIREMENT ANALYSIS
+9
+3.1
+Project Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+3.1.1
+Hardware Requirements
+. . . . . . . . . . . . . . . . . . . . .
+9
+3.1.2
+Software Requirements . . . . . . . . . . . . . . . . . . . . . .
+9
+3.1.3
+Data Requirements . . . . . . . . . . . . . . . . . . . . . . . .
+10
+3.2
+Feasibility Study . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+3.2.1
+Technical Feasibility
+. . . . . . . . . . . . . . . . . . . . . . .
+10
+3.2.2
+Economic Feasibility . . . . . . . . . . . . . . . . . . . . . . .
+11
+3.2.3
+Time Feasibility . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+3.2.4
+Operational Feasibility . . . . . . . . . . . . . . . . . . . . . .
+11
+vi
+
+--- PAGE 9 ---
+4
+SYSTEM ARCHITECTURE AND METHODOLOGY
+12
+4.1
+System Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+4.2
+System Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+4.3
+Data Sources
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+4.3.1
+Oceanic & Atmospheric Reanalysis
+. . . . . . . . . . . . . . .
+15
+4.3.2
+ENSO Indices . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+4.4
+Workflow
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+4.4.1
+Data Ingestion . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+4.4.2
+Data Preprocessing . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4.4.3
+Feature Engineering . . . . . . . . . . . . . . . . . . . . . . . .
+19
+4.4.4
+Validation and Evaluation . . . . . . . . . . . . . . . . . . . . .
+20
+4.4.5
+2026 Forecasting . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+4.5
+Feature Selection
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+4.5.1
+Overview of the Feature Selection Strategy
+. . . . . . . . . . .
+22
+4.5.2
+Mutual Information Feature Selection
+. . . . . . . . . . . . . .
+23
+4.5.3
+Method 1: Stratified/Flat MIFS with Restricted Candidate Pool .
+25
+4.5.4
+Method 2: Correlation-Approximated MIFS with Expanded Can-
+didate Pool
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.6
+Baseline Model (XGBoost) . . . . . . . . . . . . . . . . . . . . . . . .
+28
+4.7
+Deep Learning Model (CNN-TCN) . . . . . . . . . . . . . . . . . . . .
+28
+5
+IMPLEMENTATION DETAILS
+32
+5.1
+Climate Data Acquisition . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+5.1.1
+Pacific Ocean Data . . . . . . . . . . . . . . . . . . . . . . . .
+32
+5.1.2
+South Asian Regional Climate Data
+. . . . . . . . . . . . . . .
+32
+5.2
+Data Gridding and Merging . . . . . . . . . . . . . . . . . . . . . . . .
+33
+5.3
+Missing Value Handling . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+5.3.1
+Step 1: Spatial Interpolation
+. . . . . . . . . . . . . . . . . . .
+34
+5.3.2
+Step 2: Multivariate Feature Engineering
+. . . . . . . . . . . .
+34
+5.3.3
+Step 3: Iterative Multivariate Imputation . . . . . . . . . . . . .
+34
+5.4
+Anomaly Computation and Baseline . . . . . . . . . . . . . . . . . . .
+34
+5.5
+Data Normalization . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+5.6
+Niño Index Computation and Validation . . . . . . . . . . . . . . . . .
+35
+5.7
+Feature Engineering and Tensor Construction
+. . . . . . . . . . . . . .
+36
+5.7.1
+Channel Definition . . . . . . . . . . . . . . . . . . . . . . . .
+36
+5.7.2
+Tensor Construction and Alignment
+. . . . . . . . . . . . . . .
+36
+5.8
+Feature Selection: Implementation and Results . . . . . . . . . . . . . .
+37
+5.8.1
+Method 1: Restricted Candidate Pool . . . . . . . . . . . . . . .
+37
+5.8.2
+Method 2: Expanded Candidate Pool . . . . . . . . . . . . . . .
+38
+5.8.3
+Comparison of Method 1 and Method 2 . . . . . . . . . . . . .
+40
+5.9
+Baseline Model Implementation (XGBoost) . . . . . . . . . . . . . . .
+41
+5.9.1
+Regularization-Focused Grid Search (Method 1) . . . . . . . . .
+41
+vii
+
+--- PAGE 10 ---
+5.9.2
+Baseline XGBoost Formulation
+. . . . . . . . . . . . . . . . .
+41
+5.9.3
+Hyperparameter Tuning Process . . . . . . . . . . . . . . . . .
+43
+5.9.4
+Anomaly Correlation Coefficient (ACC) . . . . . . . . . . . . .
+43
+5.10 Deep Learning Model Implementation (CNN-TCN) . . . . . . . . . . .
+44
+5.10.1
+Framework and Hardware . . . . . . . . . . . . . . . . . . . . .
+44
+5.10.2 Architectural Hyperparameters . . . . . . . . . . . . . . . . . .
+44
+5.10.3 Refining and Tuning Process . . . . . . . . . . . . . . . . . . .
+45
+5.10.4 PCA Target Compression and Spatial Correlation Loss . . . . .
+46
+5.10.5 Lead Time Variations and Early Stopping
+. . . . . . . . . . . .
+46
+5.10.6 Multi-Seed Ensemble Architecture . . . . . . . . . . . . . . . .
+47
+6
+RESULTS AND ANALYSIS
+48
+6.1
+Data Pipeline Validation
+. . . . . . . . . . . . . . . . . . . . . . . . .
+48
+6.1.1
+Correlation Analysis
+. . . . . . . . . . . . . . . . . . . . . . .
+48
+6.2
+Method 1: Restricted-Pool MIFS – Feature Selection and Baseline Model
+Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+6.2.1
+Feature Selection Methodology . . . . . . . . . . . . . . . . . .
+49
+6.2.2
+Performance Metrics . . . . . . . . . . . . . . . . . . . . . . .
+49
+6.2.3
+Spatial Distribution of Selected Features . . . . . . . . . . . . .
+50
+6.3
+Detailed Method 1 MIFS Feature Selection Results
+. . . . . . . . . . .
+50
+6.3.1
+Stratified vs. Non-Stratified Prefiltering
+. . . . . . . . . . . . .
+50
+6.3.2
+Distribution of Selected Features . . . . . . . . . . . . . . . . .
+51
+6.3.3
+Redundancy Penalty Effect . . . . . . . . . . . . . . . . . . . .
+51
+6.4
+Detailed Method 1 XGBoost Performance Analysis . . . . . . . . . . .
+52
+6.4.1
+Baseline vs. Tuned vs. Regularized . . . . . . . . . . . . . . . .
+52
+6.4.2
+Time-Series Predictions Analysis . . . . . . . . . . . . . . . . .
+52
+6.4.3
+Key Results . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.4.4
+Model Comparison Summary (Method 1) . . . . . . . . . . . .
+57
+6.5
+Method 2: Expanded-Pool, Correlation-Approximated MIFS – Results .
+57
+6.5.1
+K-Sweep Outcome
+. . . . . . . . . . . . . . . . . . . . . . . .
+58
+6.5.2
+Baseline XGBoost Performance
+. . . . . . . . . . . . . . . . .
+58
+6.5.3
+Method 2 Limitations . . . . . . . . . . . . . . . . . . . . . . .
+58
+6.6
+Comparative Analysis: Method 1 vs. Method 2
+. . . . . . . . . . . . .
+59
+6.6.1
+Candidate Pool Size and Redundancy Estimation
+. . . . . . . .
+59
+6.6.2
+Selected Feature Count and Test Performance . . . . . . . . . .
+59
+6.6.3
+Interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+6.7
+Error Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+6.8
+CNN-TCN Deep Learning Model Results
+. . . . . . . . . . . . . . . .
+61
+6.8.1
+CNN-TCN Architecture and Training
+. . . . . . . . . . . . . .
+61
+6.8.2
+Results: 3-Month Lead Time Prediction . . . . . . . . . . . . .
+62
+6.8.3
+Results: 6-Month Lead Time Prediction . . . . . . . . . . . . .
+63
+6.8.4
+Comparative Analysis: CNN-TCN vs. Baseline Methods . . . .
+65
+viii
+
+--- PAGE 11 ---
+6.8.5
+Addressing Baseline Limitations . . . . . . . . . . . . . . . . .
+66
+6.8.6
+Operational Implications . . . . . . . . . . . . . . . . . . . . .
+66
+6.8.7
+Final Ensemble Results and South Asian Impact Assessment . .
+67
+6.8.8
+Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+7
+FUTURE ENHANCEMENTS
+70
+7.1
+Data Resolution and Spatial Processing . . . . . . . . . . . . . . . . . .
+70
+7.2
+Advanced Spatiotemporal Architectures
+. . . . . . . . . . . . . . . . .
+70
+7.3
+Probabilistic Forecasting and Uncertainty Quantification
+. . . . . . . .
+70
+7.4
+Extended Predictive Horizons and Regional Impacts . . . . . . . . . . .
+71
+8
+CONCLUSION
+72
+8.1
+Summary of Objectives and Methodology . . . . . . . . . . . . . . . .
+72
+8.2
+Key Quantitative Findings . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+8.3
+Identified Limitations of Tree-Based Baselines . . . . . . . . . . . . . .
+73
+8.4
+Final Remarks and Deep Learning Outcomes
+. . . . . . . . . . . . . .
+73
+9
+APPENDICES
+75
+Appendix A: Project Budget
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+Appendix B: Project Timeline
+. . . . . . . . . . . . . . . . . . . . . . . . .
+76
+Appendix C: Details of Dataset . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+REFERENCES
+81
+ix
+
+--- PAGE 12 ---
+LIST OF FIGURES
+Figure 4-1
+System Architecture of the project . . . . . . . . . . . . . . . .
+13
+Figure 4-2
+Data Preprocessing Pipeline
+. . . . . . . . . . . . . . . . . . .
+14
+Figure 5-1
+K-sweep validation: RMSE vs. number of features K (Method
+1, restricted candidate pool) . . . . . . . . . . . . . . . . . . . .
+38
+Figure 5-2
+K-sweep validation for Method 2 (expanded candidate pool)
+. .
+39
+Figure 5-3
+Geographic distribution of the 500 Method-2 MIFS-selected
+grid cells across the six input channels. . . . . . . . . . . . . . .
+40
+Figure 6-1
+Niño 3.4 ONI - Actual vs Method 1 XGBoost baseline predictions 53
+Figure 6-2
+Zoomed rendering of out-of-sample forecasts (2019-2026), Method
+1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+Figure 6-3
+Tuned model test predictions: actual vs. predicted Niño 3.4
+index (2023-2025)
+. . . . . . . . . . . . . . . . . . . . . . . .
+54
+Figure 6-4
+Tuned model feature importances . . . . . . . . . . . . . . . . .
+55
+Figure 6-5
+Regularized model test predictions: actual vs. predicted Niño
+3.4 index (2023-2025)
+. . . . . . . . . . . . . . . . . . . . . .
+56
+Figure 6-6
+Regularized model feature importances
+. . . . . . . . . . . . .
+56
+Figure 6-7
+CNN-TCN training curve for 3-month lead time. . . . . . . . . .
+62
+Figure 6-8
+Niño 3.4 ONI – Actual vs. CNN-TCN predictions at 3-month
+lead time. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+Figure 6-9
+CNN-TCN training curve for 6-month lead time. . . . . . . . . .
+64
+Figure 6-10 Niño 3.4 ONI – Actual vs. CNN-TCN predictions at 6-month
+lead time. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+Figure 6-11 Actual versus predicted South Asian temperature (t2m) and pre-
+cipitation (tp) anomaly maps for December 2025. . . . . . . . .
+68
+Figure 9-1
+Project Timeline Gantt Chart . . . . . . . . . . . . . . . . . . .
+76
+x
+
+--- PAGE 13 ---
+LIST OF TABLES
+Table 2-1
+Comparison of Deep Learning Approaches for ENSO Forecasting
+8
+Table 5-1
+Regularized XGBoost grid (4,374 combinations) . . . . . . . . .
+41
+Table 5-2
+XGBoost configurations used throughout the K-Sweep and final
+baseline evaluation.
+. . . . . . . . . . . . . . . . . . . . . . . .
+42
+Table 5-3
+Final CNN-TCN Training Hyperparameters . . . . . . . . . . . .
+45
+Table 6-1
+Method 1 Baseline Model Performance by Feature Count (K) . .
+49
+Table 6-2
+Method 1 MIFS feature counts and top predictors across models .
+50
+Table 6-3
+Method 1 model performance comparison (Train/Val/Test RMSE
+and ACC) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+Table 6-4
+Recommended Method 1 model: Regularized (best balance of
+RMSE, ACC, and robustness) . . . . . . . . . . . . . . . . . . .
+57
+Table 6-5
+Method 2 Baseline XGBoost Model Performance (K = 500 fea-
+tures, 3-month lead) . . . . . . . . . . . . . . . . . . . . . . . .
+58
+Table 6-6
+Head-to-head comparison of Method 1 (best configuration) and
+Method 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+Table 6-7
+CNN-TCN Model Performance at 3-Month Lead Time (Single
+Seed) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+Table 6-8
+CNN-TCN Model Performance at 6-Month Lead Time . . . . . .
+64
+Table 6-9
+Comprehensive Comparison of All Methods at 3-Month Lead Time 65
+Table 6-10 5-Seed Ensemble Results (Mean ± Standard Deviation)
+. . . . .
+67
+Table 9-1
+Estimated Project Budget
+. . . . . . . . . . . . . . . . . . . . .
+75
+Table 9-2
+Summary of datasets used in the project . . . . . . . . . . . . . .
+77
+Table 9-3
+Chronological data split used across all models . . . . . . . . . .
+79
+Table 9-4
+Final input channels used in tensor construction . . . . . . . . . .
+79
+xi
+
+--- PAGE 14 ---
+LIST OF ABBREVIATIONS
+ACC
+Anomaly Correlation Coefficient
+AI
+Artificial Intelligence
+CMIP6
+Coupled Model Intercomparison Project Phase 6
+CNN-TCN
+Convolutional Neural Network – Temporal Convolutional Network
+CORDEX
+Coordinated Regional Climate Downscaling Experiment
+DESN
+Deep Echo State Network
+DL
+Deep Learning
+ECMWF
+European Centre for Medium-Range Weather Forecasts
+ENSO
+El Niño-Southern Oscillation
+ESN
+Echo State Network
+GCM
+General Circulation Model
+GODAS
+Global Ocean Data Assimilation System
+GPU
+Graphics Processing Unit
+JJAS
+June-July-August-September
+LSTM
+Long Short-Term Memory
+MAE
+Mean Absolute Error
+MEI
+Multivariate ENSO Index
+MIFS
+Mutual Information Feature Selection
+ML
+Machine Learning
+NOAA
+National Oceanic and Atmospheric Administration
+ORAS5
+Ocean Reanalysis System 5
+RF
+Random Forest
+RMSE
+Root Mean Square Error
+RNN
+Recurrent Neural Network
+ResNet
+Residual Network
+SLP
+Sea Level Pressure
+SST
+Sea Surface Temperature
+XGBoost
+Extreme Gradient Boosting
+xii
+
+--- PAGE 15 ---
+1. INTRODUCTION
+1.1
+Background
+The El Niño-Southern Oscillation (ENSO) is the dominant mode of interannual climate
+variability, influencing weather patterns worldwide through coupled ocean-atmosphere
+interactions in the tropical Pacific [1]. ENSO cycles between warm (El Niño) and cool
+(La Niña) phases, driven primarily by anomalies in Sea Surface Temperature (SST)
+across the equatorial Pacific Ocean. These events have far-reaching teleconnections
+that affect precipitation, temperature, and extreme weather events across multiple con-
+tinents.
+South Asia, where the Indian Summer Monsoon provides over 70% of annual rain-
+fall, is highly vulnerable to ENSO-induced climate anomalies [2]. El Niño events are
+associated with weakened monsoon circulation, leading to droughts in the Indian sub-
+continent, while La Niña events often intensify monsoon rainfall [3]. Climate outlooks
+indicate the possibility of ENSO-related anomalies during 2026, highlighting the im-
+portance of improved forecasting systems.
+Traditional dynamical climate models, such as General Circulation Models (GCMs),
+provide seasonal ENSO forecasts but face limitations in prediction skill beyond 6–9
+months due to the “spring predictability barrier” [4]. Recent advances in deep learning
+have demonstrated superior forecasting skill at longer lead times (12–22 months) by ex-
+tracting complex spatiotemporal patterns from vast reanalysis archives [1, 3]. These
+data-driven approaches leverage Convolutional Neural Networks (CNNs) and Long
+Short-Term Memory (LSTM) networks to capture nonlinear dynamics that traditional
+statistical methods and dynamical models struggle to represent.
+1.2
+Motivation
+The motivation for this project stems from three critical factors:
+• Imminent Climate Risk: The 2026 El Niño poses significant risks to South
+Asia’s agriculture, water resources, and disaster management infrastructure. Early
+and accurate prediction enables proactive mitigation strategies.
+• Limitations of Existing Models: While dynamical models provide reasonable
+short-term ENSO forecasts, their skill degrades significantly beyond one season.
+1
+
+--- PAGE 16 ---
+Deep learning models have shown promise in extending this predictability hori-
+zon but are often not tailored to regional impact assessment.
+• Need for Actionable Regional Forecasts: Most existing ENSO prediction sys-
+tems focus on the Niño 3.4 index alone without providing spatially resolved im-
+pact assessments for vulnerable regions. There is a critical gap between global
+ENSO state prediction and localized climate impact forecasting.
+1.3
+Problem Statement
+Despite significant progress in ENSO forecasting using deep learning, existing ap-
+proaches face key limitations:
+• Most models predict only the Niño 3.4 index without translating predictions into
+regional climate impacts, limiting their practical utility for disaster preparedness
+and agricultural planning.
+• No unified deep learning framework currently exists that couples ENSO state
+forecasting with deterministic regional impact assessment specifically for South
+Asian precipitation and temperature anomalies.
+This project addresses these gaps by developing a multi-task CNN-TCN framework that
+forecasts ENSO state at 6 month lead times and simultaneously produces deterministic
+precipitation and temperature anomaly maps over South Asia.
+1.4
+Objectives
+The primary objectives of this project are as follows:
+• To develop a CNN-TCN model to forecast the Niño 3.4 index at a 6-month lead
+time using ERA5 and ORAS5 reanalysis data spanning 1980–2025.
+• To develop a coupled impact assessment module that produces deterministic fore-
+casts of June–July–August–September precipitation and temperature anomalies
+over South Asia based on the predicted Niño 3.4 index.
+2
+
+--- PAGE 17 ---
+1.5
+Scope and Limitations
+1.5.1
+Scope
+• The system will forecast ENSO states using the Niño 3.4 index at lead times of 6
+months.
+• Regional impact assessment will cover the South Asian domain (5◦N–40◦N, 60◦E–
+100◦E).
+• The model will be trained on publicly available datasets including ERA5 and
+ORAS5.
+• The final deliverable will include a functional forecasting pipeline implemented
+in Python.
+1.5.2
+Limitations
+• The model is trained on historical data and may not capture unprecedented cli-
+mate dynamics.
+• The system does not account for other climate drivers (e.g., Indian Ocean Dipole,
+Arctic Oscillation) that may modulate ENSO impacts.
+• Real-time operational deployment is beyond the scope of this project.
+1.6
+Project Applications
+• Agricultural Planning: The system provides early warning for monsoon de-
+ficiency or excess rainfall, enabling farmers and agricultural agencies to guide
+crop planning and irrigation management.
+• Disaster Preparedness: The framework identifies regions at elevated flood or
+drought risk, allowing disaster management authorities to undertake proactive
+resource allocation.
+• Water Resource Management: Seasonal reservoir operation planning is sup-
+ported through deterministic precipitation forecasts generated by this system.
+3
+
+--- PAGE 18 ---
+• Climate Research: The project contributes to the broader scientific understand-
+ing of ENSO teleconnections and advances AI-based climate prediction method-
+ologies.
+4
+
+--- PAGE 19 ---
+2. LITERATURE REVIEW
+2.1
+ENSO Prediction: From Dynamical Models to Deep Learning
+The prediction of ENSO has been a central challenge in climate science for over four
+decades. Early approaches relied on linear statistical models and dynamical ocean-
+atmosphere coupled models [4]. While dynamical models based on General Circulation
+Models (GCMs) can capture the fundamental physics of ENSO, their predictive skill
+drops sharply beyond 6–9 months due to the well-documented “spring predictability
+barrier,” where forecast initialization errors grow rapidly during boreal spring [3].
+The advent of machine learning and deep learning has opened new avenues for ENSO
+prediction. Unlike dynamical models that solve physical equations numerically, data-
+driven approaches learn complex nonlinear mappings directly from observational data,
+potentially capturing dynamics that are poorly represented in physical models.
+2.2
+Deep Learning Approaches for ENSO Forecasting
+2.2.1
+CNN-Based Multi-Year ENSO Forecasting
+Ham et al. [1] demonstrated a breakthrough in ENSO prediction by applying transfer
+learning with CNNs to forecast the Niño 3.4 index at lead times exceeding 18 months.
+Their approach addressed the fundamental challenge of limited observational data by
+pre-training the CNN on historical simulations from CMIP5 climate models and fine-
+tuning on reanalysis data (1871–1973 for training, 1984–2017 for testing). The CNN
+architecture processes monthly maps of SST, ocean heat content (upper 300m), and sea
+level pressure as multi-channel inputs, producing Niño 3.4 index predictions at various
+lead times.
+The model achieved an all-season correlation skill of 0.65 at 17-month lead time, sub-
+stantially outperforming both dynamical models and conventional statistical methods.
+Importantly, the CNN successfully predicted the onset and amplitude of El Niño events
+that traditional models missed. Gradient-based saliency analysis revealed that the net-
+work learned physically meaningful precursor patterns, including subsurface heat con-
+tent anomalies in the western Pacific that serve as recharged energy for subsequent El
+Niño development. However, the model showed reduced skill for La Niña events and
+lacked uncertainty quantification.
+5
+
+--- PAGE 20 ---
+2.2.2
+Autoencoder-LSTM Hybrid Architecture
+Dijkstra et al. [4] proposed a hybrid deep learning architecture combining autoencoders
+with LSTM networks for ENSO forecasting. Their approach first employs a convolu-
+tional autoencoder to compress high-dimensional SST fields into a low-dimensional
+latent representation, effectively performing nonlinear dimensionality reduction. The
+temporal evolution of these latent features is then modeled using an LSTM network,
+which captures the sequential dependencies inherent in ENSO dynamics.
+The autoencoder-LSTM framework was trained on SODA reanalysis data and evaluated
+against persistence forecasts and linear inverse models. The model demonstrated com-
+petitive skill at lead times of 6–12 months, with the autoencoder successfully capturing
+the dominant spatial patterns of ENSO variability (comparable to traditional EOF anal-
+ysis but with nonlinear generalization). The LSTM component effectively learned the
+oscillatory nature of ENSO transitions between warm and cool phases. The authors
+noted that the latent space representation provided physical interpretability, with differ-
+ent latent dimensions corresponding to recognizable ENSO precursor patterns.
+2.2.3
+Physics-Guided Deep Echo State Networks
+Mahesh et al. [3] introduced a physics-guided Deep Echo State Network (DESN) ap-
+proach to enhance ENSO predictability limits. Echo State Networks (ESNs) are a vari-
+ant of recurrent neural networks where the recurrent layer (reservoir) has fixed random
+weights, and only the output layer is trained. This architecture offers computational
+efficiency and avoids the vanishing gradient problem that plagues conventional RNNs
+during training.
+The key innovation in their work is the incorporation of physics-based constraints into
+the ESN framework. Specifically, they embed known ENSO dynamics, such as the
+recharge-discharge oscillator mechanism and delayed oscillator theory, as structural pri-
+ors in the reservoir connectivity. The physics-guided DESN achieved prediction skill
+comparable to deep learning baselines (correlation > 0.5 at 18-month lead) while re-
+quiring significantly fewer trainable parameters and providing enhanced interpretability.
+The model was trained on ERA5 reanalysis data with SST, thermocline depth, and zonal
+wind stress as inputs. A notable advantage is the model’s ability to overcome the spring
+predictability barrier more effectively than purely data-driven approaches, attributed to
+the physics constraints preventing the model from learning spurious correlations that
+6
+
+--- PAGE 21 ---
+break down during spring transitions.
+2.2.4
+ResoNet: Robust and Explainable ENSO Forecasting
+Ye et al. [2] developed ResoNet, a hybrid deep learning framework combining Residual
+Network (ResNet) architecture with physical ocean dynamics for robust and explainable
+ENSO forecasting. The model integrates residual learning blocks that capture multi-
+scale spatiotemporal features from SST, ocean heat content, and wind stress fields. A
+key contribution is the attention mechanism that identifies physically meaningful pre-
+cursor regions.
+ResoNet achieved state-of-the-art performance with correlation skills exceeding 0.7 at
+12-month lead time and maintained useful skill (> 0.5) beyond 18 months. The ex-
+plainability module generates spatial attribution maps highlighting the oceanic regions
+most influential for each prediction, enhancing trust in the model’s outputs. The model
+demonstrated particular strength in predicting the diversity of El Niño events (Eastern
+Pacific vs. Central Pacific types), a capability lacking in many earlier deep learning ap-
+proaches. The framework also incorporated ensemble prediction to provide uncertainty
+estimates, generating probabilistic forecasts rather than single deterministic predictions.
+2.3
+Machine Learning for Regional Climate Impact Assessment
+2.3.1
+ENSO-Driven Weather Pattern Prediction
+Dutta et al. [5] investigated the application of machine learning for predicting seasonal
+weather patterns from ENSO indices, bridging the gap between large-scale ENSO state
+prediction and regional climate impacts. Their study employed Random Forest, Gradi-
+ent Boosting, and Support Vector Machine classifiers to predict seasonal precipitation
+and temperature categories (below normal, normal, above normal) conditioned on mul-
+tivariate ENSO indicators including Niño 3.4, Southern Oscillation Index (SOI), and
+the Multivariate ENSO Index (MEI).
+The results demonstrated that ensemble machine learning methods, particularly XG-
+Boost and Random Forest, achieved classification accuracies of 70–82% for seasonal
+precipitation categories when ENSO indices from 2–3 months prior were used as pre-
+dictors. Feature importance analysis revealed that the combination of Niño 3.4 ampli-
+tude and rate of change provided the strongest predictive signal for South Asian mon-
+soon anomalies. However, the study was limited to categorical predictions and did not
+7
+
+--- PAGE 22 ---
+provide spatially resolved forecasts.
+2.4
+Comparison of Existing Approaches
+Table 2-1 summarizes the key characteristics and performance metrics of the reviewed
+ENSO forecasting approaches.
+Table 2-1 Comparison of Deep Learning Approaches for ENSO Forecasting
+Study
+Method
+Max Lead
+Corr.
+Uncert.
+Ham et al. [1]
+CNN + Transfer Learning
+17 mo.
+0.65
+No
+Dijkstra et al. [4]
+Autoencoder + LSTM
+12 mo.
+0.60
+No
+Mahesh et al. [3]
+Physics-guided DESN
+18 mo.
+0.50
+No
+Ye et al. [2]
+ResoNet (ResNet + Physics)
+18 mo.
+0.70
+Yes
+Dutta et al. [5]
+XGBoost/RF Classification
+3 mo.
+0.82
+No
+8
+
+--- PAGE 23 ---
+3. REQUIREMENT ANALYSIS
+This chapter enumerates and describes the hardware, software, and data components
+required for the successful execution of the ENSO forecasting project. It also evaluates
+the technical, economic, time, and operational feasibility of the proposed system.
+3.1
+Project Requirements
+The development of a deep learning framework for ENSO forecasting and regional
+climate impact assessment requires specific computational resources, software tools,
+and high-dimensional climate datasets. These requirements are detailed below.
+3.1.1
+Hardware Requirements
+While the initial data preprocessing and baseline model development can be performed
+on standard local machines, the training of the Convolutional Neural Network–Temporal
+Convolutional Network (CNN-TCN) architecture requires significant computational power.
+• Local Development Machine: A standard laptop or desktop computer with at
+least 16 GB of RAM and a multi-core processor for code development, data in-
+spection, and lightweight baseline testing (e.g., XGBoost).
+• Cloud GPU Computing: Access to high-performance cloud GPUs (such as
+NVIDIA Tesla V100 or A100 via Google Colab Pro or AWS EC2) is strictly
+required. Training deep learning models on 45 years of 2◦× 2◦spatiotemporal
+climate data involves millions of parameters and large batch processing, which
+exceeds the capacity of standard consumer hardware.
+• Storage: Approximately 500 GB to 1 TB of storage (local or cloud-based) is
+required to store the raw and processed NetCDF and Zarr files for the ERA5 and
+ORAS5 datasets.
+3.1.2
+Software Requirements
+The project relies entirely on open-source software and standard scientific computing
+libraries. The core software stack includes:
+• Programming Language: Python 3.8 or higher, chosen for its extensive ecosys-
+tem in machine learning and data science.
+9
+
+--- PAGE 24 ---
+• Deep Learning Frameworks: PyTorch or TensorFlow for building, training, and
+evaluating the CNN-TCN hybrid architecture.
+• Data Processing and Analysis: Xarray for handling multi-dimensional climate
+arrays (NetCDF/Zarr), Pandas and NumPy for data manipulation, and Scikit-
+learn for feature selection (MIFS) and baseline modeling.
+• API and Version Control: The Copernicus Climate Data Store (CDS) API for
+automated data fetching, and Git/GitHub for version control and collaborative
+code management.
+• Documentation: LATEX (via Overleaf) for compiling the final report according to
+IOE formatting guidelines.
+3.1.3
+Data Requirements
+The model requires high-quality, long-term historical climate data to capture interan-
+nual variability. The specific datasets include:
+• ERA5 Reanalysis Data: Monthly-mean Sea Surface Temperature (SST), 2-meter
+temperature, and precipitation data from the Copernicus Climate Data Store.
+• ORAS5 Ocean Reanalysis: Subsurface ocean variables (temperature and salin-
+ity) accessed via the ARCO Zarr store to provide depth-related ENSO precursor
+signals.
+• NOAA Niño Indices: Official historical Niño 3.4 indices used as the ground
+truth for validating the model’s predictive accuracy.
+3.2
+Feasibility Study
+A comprehensive feasibility analysis was conducted to ensure that the project objectives
+can be realistically achieved within the given constraints.
+3.2.1
+Technical Feasibility
+The project is technically feasible given the availability of all required datasets through
+public repositories (ECMWF CDS, NOAA, ESGF). The Convolutional Neural Network–
+Temporal Convolutional Network (CNN-TCN) architecture is well-supported in Py-
+Torch, and the 45-year dataset (1980–2025) provides sufficient temporal coverage for
+10
+
+--- PAGE 25 ---
+robust model training. The six-stage pipeline (data ingestion, preprocessing, feature
+engineering, MIFS feature selection, model development, and forecasting) is modular
+and implementable within the team’s existing Python and machine learning skill set.
+3.2.2
+Economic Feasibility
+The project incurs near-zero data and software costs, as all datasets and development
+tools are freely available. The primary expenditure is cloud compute (Google Colab
+Pro) for CNN-TCN training on ERA5 and ORAS5 reanalysis fields. The total estimated
+budget of NPR 10,500 is well within the means of a student project group, with no
+specialized hardware procurement required.
+3.2.3
+Time Feasibility
+Based on the project schedule spanning June 1 to September 7, 2025 (approximately
+14 weeks), the timeline is realistic and well-structured. The work begins with liter-
+ature review, data collection, and preprocessing in the first four weeks, followed by
+feature engineering, MIFS feature selection, and parallel development of the XGBoost
+baseline and CNN-TCN model through mid-August. Model training, hyperparameter
+tuning, forecast generation, and evaluation are conducted in the final weeks, with doc-
+umentation and report writing running concurrently from mid-August through project
+completion. Tasks are sequenced with deliberate overlaps (for instance, XGBoost base-
+line and CNN-TCN development proceed in parallel) to maximize efficiency within the
+14-week window.
+3.2.4
+Operational Feasibility
+The project delivers a self-contained Python-based forecasting pipeline publishable as
+an open-source GitHub repository. The modular architecture ensures each stage can
+be independently tested and debugged. All four team members bring complementary
+skills in machine learning, data preprocessing, and climate data handling, ensuring bal-
+anced workload distribution. The final outputs (ENSO state forecasts and deterministic
+South Asian precipitation and temperature anomaly maps for JJAS 2026) are directly
+interpretable and actionable for the target academic audience.
+11
+
+--- PAGE 26 ---
+4. SYSTEM ARCHITECTURE AND METHODOLOGY
+4.1
+System Overview
+The system follows an eight-stage pipeline architecture:
+1. Data ingestion
+2. Data preprocessing
+3. Feature engineering
+4. Feature selection
+5. Baseline model development
+6. Deep learning model training
+7. Model validation
+8. 2026 ENSO forecasting
+The framework ingests multi-variable climate reanalysis data and produces ENSO state
+predictions at 6-month lead times along with regional precipitation and temperature
+anomaly forecasts for South Asia.
+12
+
+--- PAGE 27 ---
+4.2
+System Architecture
+Figure 4-1 System Architecture of the project
+The system architecture comprises eight sequential stages: (1) Data Ingestion, where
+multi-variable climate reanalysis datasets (ERA5, ORAS5, NOAA) are acquired from
+13
+
+--- PAGE 28 ---
+public repositories; (2) Data Preprocessing, which includes spatial standardization to a
+uniform 2◦×2◦grid, temporal alignment to the common period 1980–2025, climatolog-
+ical anomaly computation, and z-score normalization; (3) Feature Engineering, where
+12-month sliding window input tensors of shape (12 × 30 × 100 × 6) are constructed
+from the six spatial fields; (4) Feature Selection, applying Mutual Information Fea-
+ture Selection (MIFS) for the XGBoost baseline; (5) Baseline Model Development,
+comprising the XGBoost baseline; (6) Deep Learning Model Training, comprising
+the CNN-TCN deep learning model; (7) Model Validation, where the models are eval-
+uated; and (8) Forecasting, where the trained model generates 3-month and 6-month
+lead Niño 3.4 index predictions and regional South Asian precipitation and temperature
+anomaly forecasts.
+Figure 4-2 Data Preprocessing Pipeline
+14
+
+--- PAGE 29 ---
+The data preprocessing pipeline (Figure 4-2) transforms raw climate reanalysis fields
+into analysis-ready inputs through four sequential operations: spatial standardization
+via area-weighted block averaging to a 2◦×2◦grid, temporal alignment ensuring all
+variables share the 1980–2025 monthly time axis, climatological anomaly computation
+by subtracting the long-term monthly mean, and z-score normalization to scale all fields
+to have a mean of 0 and a standard deviation of 1 for stable model training.
+4.3
+Data Sources
+The project utilizes the following publicly available datasets:
+4.3.1
+Oceanic & Atmospheric Reanalysis
+• ERA5 Reanalysis (ECMWF): Monthly SST, sea level pressure (SLP), 2m tem-
+perature (T2M), and wind stress fields at 1◦×1◦resolution (1950–2025).
+• ORAS5 (ECMWF): Ocean heat content and subsurface temperature profiles for
+the tropical Pacific.
+4.3.2
+ENSO Indices
+• Niño 3.4 Index (NOAA): Monthly SST anomaly in the Niño 3.4 region (5◦N–
+5◦S, 170◦W–120◦W), serving as the primary ENSO indicator (1871–present).
+4.4
+Workflow
+The project follows an eight-step pipeline: data ingestion, data preprocessing, feature
+engineering, feature selection, baseline model development, deep learning model train-
+ing, model validation, and 2026 forecasting. The data-facing steps of this pipeline are
+described below; the feature selection strategy, the baseline model, and the deep learn-
+ing model are each developed in dedicated sections (Sections 4.5–4.7) given the depth
+of methodological detail each requires.
+4.4.1
+Data Ingestion
+All datasets are aggregated, resampled to a consistent monthly 2◦×2◦grid, and aligned
+to the common period 1980–2025. Data quality checks and gap-filling procedures are
+applied to ensure temporal continuity.
+15
+
+--- PAGE 30 ---
+4.4.2
+Data Preprocessing
+The raw climate datasets ingested from ERA5, ORAS5, and NOAA undergo the fol-
+lowing preprocessing steps prior to feature engineering:
+• Spatial Standardization
+All datasets are ingested at their native 1◦latitude × 1◦longitude spatial resolution.
+A 1◦latitude × 1◦longitude grid cell covers approximately 111 km (along latitude) ×
+111 km (along longitude) at the equator, representing an area of roughly 12,300 km2.
+At 27◦N (Nepal/India region), 1◦longitude shrinks to approximately 99 km, making
+each 1◦latitude × 1◦longitude cell approximately 111 km × 99 km ≈10,989 km2. All
+datasets are subsequently coarsened to a 2◦latitude × 2◦longitude grid using block
+averaging (area-weighted mean over each 2 × 2 grid cell block), where each coarsened
+cell covers approximately 222 km × 198 km ≈43,956 km2 at 27◦N, roughly 30%
+of Nepal’s total land area. This spatial coarsening reduces the total data volume by
+a factor of four while preserving the large-scale spatial patterns and teleconnection
+signals critical for ENSO dynamics, as the dominant modes of interannual Sea Surface
+Temperature (SST) variability operate at spatial scales well above the 2◦threshold.
+The coarsened fields are then clipped to the tropical Pacific (30◦S–30◦N, 120◦E–80◦W)
+for ENSO modeling and to South Asia (5◦N–40◦N, 60◦E–100◦E) for regional impact
+assessment.
+• Temporal Alignment
+All variables are resampled to a consistent monthly temporal resolution and aligned
+to the common period 1980–2025, yielding 552 monthly time steps. ERA5 fields are
+aggregated as monthly means, and missing time steps are identified and flagged for
+gap-filling.
+• Missing Value Handling (CLIMFILL Pipeline)
+Missing values in the Sea Surface Temperature (SST) variable, arising from datatype
+inconsistencies and land-sea boundaries, are handled using a three-step CLIMFILL-
+style pipeline. Crucially, this pipeline is applied strictly to ocean points (identified via
+the land-sea mask, lsm < 0.5), while land points are intentionally left as NaN to prevent
+physical contamination of the dataset.
+Step 1: Spatial Interpolation (First-Guess): A spatial first-guess is generated for ev-
+ery oceanic gap by interpolating SST across latitude and longitude within each monthly
+16
+
+--- PAGE 31 ---
+time slice. Using the griddata function from the scipy.interpolate module, linear
+interpolation estimates missing values from surrounding valid ocean points. For gaps
+falling outside the convex hull of known data, a nearest-neighbor fallback method is
+applied.
+Step 2: Multivariate Feature Engineering: To refine the spatial estimates, a robust set
+of multivariate predictors is engineered. Temporal seasonality is captured via cyclical
+sine and cosine transformations of the month. Spatial context is retained using lati-
+tude, longitude, and the spatial first-guess. Furthermore, highly correlated atmospheric
+variables from ERA5, including 2-meter temperature, mean sea level pressure, wind
+components, and top-of-atmosphere thermal radiation, are incorporated to inform the
+imputation.
+Step 3: Iterative Multivariate Imputation: The final step employs an iterative algo-
+rithm to refine the SST estimates. Using the IterativeImputer from the scikit-learn
+library with a BayesianRidge regression estimator, the model iteratively predicts miss-
+ing values based on the engineered features. This runs for a maximum of 10 iterations
+until convergence, strictly preserving all originally observed SST values.
+Post-Processing: To ensure physical realism, the refined SST estimates are clipped to
+the minimum and maximum bounds of the originally observed oceanic SST range. This
+prevents the statistical model from generating extreme outliers and ensures the imputed
+data remains physically plausible.
+Variable Exclusion: Variables for which more than 5% of total data points, computed
+across all time steps and grid cells, remain missing after the application of the above
+filling strategies are excluded entirely from the feature set. Retention of heavily incom-
+plete variables risks introducing spurious patterns into the training data, potentially
+degrading model performance.
+• Anomaly Computation
+Monthly climatological means are computed for each variable over the 1980–2010
+baseline period and subtracted from the raw fields to obtain anomaly fields. This re-
+moves the seasonal cycle and isolates interannual variability relevant to ENSO dynam-
+ics:
+X′(t) = X(t) −¯Xm
+(4-1)
+where X′(t) is the anomaly at time t, X(t) is the raw value, and ¯Xm is the climatolog-
+17
+
+--- PAGE 32 ---
+ical mean for calendar month m.
+• Normalization
+All anomaly fields are standardized using Z-score normalization computed exclusively
+on the training set (1980–2018) to prevent data leakage into the validation and test sets:
+ˆX(t) = X′(t) −µtrain
+σtrain
+(4-2)
+where µtrain and σtrain are the mean and standard deviation of the training period anoma-
+lies.
+• Niño 3.4 Index Computation
+The target variable for the El Niño–Southern Oscillation (ENSO) forecasting objec-
+tive is the Niño 3.4 index, defined as the area-averaged Sea Surface Temperature (SST)
+anomaly over the Niño 3.4 region (5◦S–5◦N, 170◦W–120◦W). The index is computed di-
+rectly from ERA5 SST anomaly fields, which are already ingested as part of the primary
+dataset pipeline, thereby eliminating the need for an additional observational dataset.
+For each monthly time step t, the Niño 3.4 index is computed as the area-weighted
+spatial mean of SST anomalies over all grid cells (i, j) falling within the Niño 3.4
+domain:
+N3.4(t) =
+P
+i,j∈Ωw(i, j) · X′
+SST(i, j, t)
+P
+i,j∈Ωw(i, j)
+(4-3)
+where N3.4(t) is the Niño 3.4 index at time step t, X′
+SST(i, j, t) is the SST anomaly at
+grid cell (i, j) and time step t computed following the anomaly procedure described in
+Section 4.4.2, Ωdenotes the set of all grid cells within the Niño 3.4 region (5◦S–5◦N,
+170◦W–120◦W), and w(i, j) = cos(ϕi) is the area weight assigned to grid cell (i, j),
+where ϕi denotes the latitude of grid cell i in radians.
+A 3-month running mean is subsequently applied to the raw monthly index values to
+suppress intra-seasonal noise and retain only the multi-month ENSO signal:
+ˆN3.4(t) = 1
+3
+2
+X
+k=0
+N3.4(t −k)
+(4-4)
+where ˆN3.4(t) is the smoothed Niño 3.4 index at time step t and N3.4(t −k) denotes the
+18
+
+--- PAGE 33 ---
+raw index value at lag k months. The resulting smoothed time series serves as the pri-
+mary prediction target for the CNN-TCN model in Objective 1 and as the conditioning
+variable for the regional impact assessment module in Objective 2.
+4.4.3
+Feature Engineering
+Input sequences are constructed consisting of 12 consecutive monthly snapshots of six
+spatial fields extracted over the tropical Pacific domain (30◦S–30◦N, 120◦E–80◦W),
+which represents the primary region of El Niño–Southern Oscillation (ENSO) variabil-
+ity. The six spatial fields are as follows:
+• Sea Surface Temperature (SST) anomaly, sourced from the European Centre
+for Medium-Range Weather Forecasts Reanalysis version 5 (ERA5), representing
+the primary indicator of ENSO state at the ocean surface.
+• Mean Sea Level Pressure (MSL) anomaly, sourced from ERA5, capturing the
+atmospheric pressure patterns associated with the Walker Circulation and trade
+wind variability.
+• Zonal (east–west) wind stress anomaly, sourced from ERA5, representing the
+strength and direction of trade winds along the equatorial Pacific, which drive the
+east-west redistribution of warm surface water characteristic of ENSO events.
+• Meridional (north–south) wind stress anomaly, sourced from ERA5, capturing
+cross-equatorial wind dynamics and their role in ENSO evolution.
+• Upper 300m Ocean Heat Content (OHC) anomaly, sourced from the Ocean
+Reanalysis System 5 (ORAS5), capturing subsurface thermal energy accumula-
+tion in the tropical Pacific. Subsurface heat content is among the most skill-
+ful predictors of ENSO at lead times of 3 months and beyond, as it reflects the
+recharge and discharge of oceanic heat prior to the surface expression of El Niño
+or La Niña events.
+• 20◦C Isotherm Depth anomaly, sourced from ORAS5, representing thermo-
+cline depth variations in the equatorial Pacific, which serve as a critical physical
+precursor to surface SST changes.
+Each input sequence is therefore represented as a four-dimensional tensor of shape:
+19
+
+--- PAGE 34 ---
+X ∈RT×Nϕ×Nλ×C
+(4-5)
+where T = 12 denotes the number of monthly time steps in each input window, Nϕ =
+30 denotes the number of latitude grid cells, Nλ = 100 denotes the number of longitude
+grid cells, and C = 6 denotes the number of input channels corresponding to the six
+spatial fields listed above. These sequences serve as the primary input to both the
+Convolutional Neural Network–Temporal Convolutional Network (CNN-TCN) model
+and the XGBoost baseline model, with the latter receiving the tensor flattened into a
+one-dimensional feature vector of length 12 × 30 × 100 × 6 = 216,000 prior to MIFS-
+based dimensionality reduction (Section 4.5).
+4.4.4
+Validation and Evaluation
+A chronological train–validate–test split is employed to evaluate model performance,
+ensuring that no future information is accessible during training or validation:
+• Training: 1980–2018
+• Validation: 2019–2022
+• Testing: 2023–2025
+Hyperparameters for both the Convolutional Neural Network–Temporal Convolutional
+Network (CNN-TCN) and the XGBoost baseline are tuned exclusively on the validation
+set. Final performance for both models is reported on the held-out test set (2023–2025).
+ENSO Forecast Evaluation: The performance of the Niño 3.4 index forecast is evalu-
+ated using the following metrics:
+Anomaly Correlation Coefficient (ACC): The ACC measures the temporal correla-
+tion between predicted and observed Niño 3.4 anomalies over the test period:
+ACC =
+PN
+t=1 ˆy(t) · y(t)
+qPN
+t=1 ˆy(t)2 ·
+qPN
+t=1 y(t)2
+(4-6)
+where ˆy(t) is the predicted Niño 3.4 index at time step t, y(t) is the corresponding
+observed value, and N is the total number of test time steps. An ACC value of 1.0
+20
+
+--- PAGE 35 ---
+indicates perfect prediction skill, while a value of 0.0 indicates no skill. A model is
+generally considered skillful when ACC > 0.5.
+Root Mean Square Error (RMSE): The RMSE quantifies the average magnitude of
+prediction errors in the same units as the Niño 3.4 index (◦C):
+RMSE =
+v
+u
+u
+t 1
+N
+N
+X
+t=1
+(ˆy(t) −y(t))2
+(4-7)
+where a lower RMSE indicates better forecast accuracy. Both ACC and RMSE are
+reported for the CNN-TCN and XGBoost models to enable direct comparison.
+Impact Forecast Evaluation: The performance of the South Asia precipitation and
+temperature anomaly forecasts is evaluated against ERA5 reanalysis data using the fol-
+lowing metrics:
+Mean Absolute Error (MAE): The MAE measures the average absolute deviation
+between predicted and observed anomaly values across all South Asian grid cells and
+test time steps:
+MAE =
+1
+N · G
+N
+X
+t=1
+G
+X
+g=1
+|ˆy(g, t) −y(g, t)|
+(4-8)
+where ˆy(g, t) is the predicted anomaly at grid cell g and time step t, y(g, t) is the
+corresponding observed anomaly, G = 340 is the total number of South Asian grid
+cells, and N is the number of test time steps.
+Pearson Correlation Coefficient: The Pearson correlation coefficient measures the
+linear association between predicted and observed anomaly fields across all grid cells
+and test time steps:
+r =
+PN
+t=1
+PG
+g=1
+ ˆy(g, t) −¯ˆy
+
+(y(g, t) −¯y)
+qPN
+t=1
+PG
+g=1
+ ˆy(g, t) −¯ˆy
+2 ·
+qPN
+t=1
+PG
+g=1 (y(g, t) −¯y)2
+(4-9)
+where ¯ˆy and ¯y are the mean predicted and observed anomaly values respectively across
+all grid cells and test time steps. A Pearson correlation value closer to 1.0 indicates
+stronger agreement between the predicted and observed spatial anomaly patterns.
+21
+
+--- PAGE 36 ---
+4.4.5
+2026 Forecasting
+Generate ensemble forecasts for the Niño 3.4 index and June–July–August–September
+2026 precipitation and temperature anomalies over South Asia using the trained model
+with the most recent available observational data as input.
+4.5
+Feature Selection
+4.5.1
+Overview of the Feature Selection Strategy
+The XGBoost baseline receives the fully flattened input tensor as a tabular feature vec-
+tor of 12 × 30 × 100 × 6 = 216,000 dimensions per sample (Section 4.4.3), while
+only on the order of a few hundred labelled monthly samples are available across the
+1980–2025 study period. Training a tree-based model directly on a feature space of
+this dimensionality relative to the available sample size invites severe overfitting and
+prohibitively slow training, motivating an explicit feature selection stage prior to base-
+line model development. The Convolutional Neural Network–Temporal Convolutional
+Network (CNN-TCN), by contrast, learns spatial feature weighting implicitly through
+its convolutional filters during end-to-end training and therefore requires no separate
+feature selection step; the discussion in this section applies exclusively to the XGBoost
+baseline pipeline.
+Mutual Information Feature Selection (MIFS) is adopted as the feature selection cri-
+terion in preference to simpler alternatives such as univariate correlation filtering or
+Principal Component Analysis (PCA). Unlike Pearson correlation, mutual information
+captures non-linear statistical dependence between a candidate grid cell and the con-
+tinuous Niño 3.4 target without requiring the target to be discretized into categorical
+ENSO phases, preserving the full information content of the regression target. Unlike
+PCA, MIFS retains individual, physically interpretable grid cells rather than opaque lin-
+ear combinations of the input space, and its redundancy-penalized formulation directly
+targets the specific failure mode of concern in a spatially gridded climate field: neigh-
+bouring grid cells are typically highly autocorrelated, so a purely relevance-ranked fea-
+ture set would be dominated by clusters of near-duplicate cells centered on the strongest
+predictor region rather than a spatially diverse set of predictors.
+Computing the redundancy term of the MIFS objective (Section 4.5.2) requires the pair-
+wise mutual information between every pair of candidate features already in, or being
+22
+
+--- PAGE 37 ---
+considered for, the selected set. Estimating this quantity accurately, via a k-nearest-
+neighbour (Kraskov) estimator, scales poorly with the number of candidate features
+under consideration, making it computationally infeasible to run an exact MIFS search
+directly over the full 144,000-dimensional candidate space. This creates a direct trade-
+off between the size of the candidate pool that can be searched and the exactness of
+the redundancy estimate applied to it: restricting the candidate pool keeps the exact
+k-NN estimator tractable but risks discarding relevant features during the initial pre-
+filtering step, whereas searching a substantially larger candidate pool requires replacing
+the exact estimator with a cheaper approximation.
+Rather than committing to one side of this trade-off, two independent, complementary
+MIFS implementations were designed, implemented, and evaluated against each other:
+• Method 1 (Section 4.5.3) prioritizes estimator exactness. It restricts the candi-
+date pool to a small, stratified subset of features before applying the exact k-NN-
+based redundancy estimator, keeping the pairwise mutual information computa-
+tion tractable at the cost of a narrower search space.
+• Method 2 (Section 4.5.4) prioritizes search breadth. It expands the candidate
+pool by an order of magnitude relative to Method 1 and substitutes a closed-form
+Gaussian correlation approximation for the exact redundancy estimate, trading
+estimator precision for the ability to search a substantially larger portion of the
+feature space.
+Both methods share the same underlying relevance criterion, redundancy-penalized ob-
+jective, and greedy selection procedure, described generally in Section 4.5.2; they differ
+solely in how the candidate pool is constructed and how the pairwise redundancy term
+is estimated. Running both implementations to completion allows the two competing
+computational strategies: exact estimation over a narrow pool versus approximate esti-
+mation over a broad pool: to be compared directly on held-out validation performance,
+with the corresponding experimental results reported in Chapter 5.
+4.5.2
+Mutual Information Feature Selection
+Mutual Information: For each grid cell (i, j) of each input variable, the mutual in-
+formation between the grid cell values and the continuous Niño 3.4 target is computed
+as:
+23
+
+--- PAGE 38 ---
+I(Xi,j; Y ) =
+X
+x∈Xi,j
+X
+y∈Y
+p(x, y) log p(x, y)
+p(x) p(y)
+(4-10)
+where Xi,j denotes the values of the feature at grid cell (i, j) across all training samples,
+Y denotes the corresponding continuous Niño 3.4 index values, p(x, y) is the joint
+probability distribution of Xi,j and Y , and p(x) and p(y) are the respective marginal
+probability distributions. A high value of I(Xi,j; Y ) indicates that knowing the value
+at grid cell (i, j) substantially reduces uncertainty about the Niño 3.4 index, implying
+strong predictive relevance for ENSO forecasting.
+Redundancy Penalization: MIFS explicitly penalizes redundancy between candidate
+and already selected features to ensure the retained feature set is both maximally infor-
+mative and minimally redundant. For a candidate feature Xi,j and the set of already
+selected features S, the redundancy-penalized relevance score is defined as:
+S(Xi,j) = I(Xi,j; Y ) −1
+|S|
+X
+Xk,l∈S
+I(Xi,j; Xk,l)
+(4-11)
+where I(Xi,j; Y ) is the mutual information between the candidate feature and the Niño
+3.4 target, I(Xi,j; Xk,l) is the mutual information between the candidate feature and
+each already selected feature Xk,l ∈S, and |S| is the current size of the selected feature
+set. At each iteration, the candidate feature with the highest score S(Xi,j) is added to S.
+This iterative procedure ensures that each newly selected feature contributes maximum
+new predictive information about the Niño 3.4 target beyond what the already selected
+features collectively provide.
+General Algorithm: Given a candidate pool of features, the greedy MIFS procedure
+proceeds as follows:
+1. Compute relevance: Calculate the mutual information relevance I(Xi,j; Y ) for
+every candidate feature against the Niño 3.4 target.
+2. Initialize the selected set: Set S = ∅and, at the first iteration, select the candi-
+date with maximum relevance alone.
+3. Greedy redundancy-penalized selection: At each subsequent iteration, com-
+pute the redundancy-penalized score S(Xi,j) for every remaining candidate against
+the current selected set and add the highest-scoring candidate to S.
+24
+
+--- PAGE 39 ---
+4. Repeat: Continue steps 2–3 until a predetermined number of features K has been
+selected, yielding a ranked list of features in order of selection.
+5. Select K via K-sweep: Since K is not fixed a priori, retrain XGBoost on the top-
+K features for a range of candidate K values and evaluate each on the validation
+set (2019–2022), retaining the value of K that minimizes validation Root Mean
+Square Error (RMSE) as K∗.
+Physical Interpretation: The spatial regions expected to achieve the highest mutual in-
+formation scores with the Niño 3.4 target are consistent with established ENSO physics.
+Sea Surface Temperature (SST) anomalies in the central and eastern equatorial Pa-
+cific, equatorial wind stress anomalies along the Walker Circulation pathway, and upper
+300m Ocean Heat Content (OHC) anomalies in the western Pacific thermocline are ex-
+pected to carry the strongest predictive signal. The redundancy penalization step further
+ensures that highly correlated neighboring grid cells, which carry largely overlapping
+information, do not dominate the selected feature set, yielding a spatially diverse and
+physically meaningful set of predictors.
+Application: The MIFS procedure, in both of its implementations described below,
+is applied exclusively to the XGBoost baseline model. The selected K features are
+extracted from the flattened one-dimensional input vector and fed directly into XGBoost
+for training and inference. The CNN-TCN model receives the full unfiltered input tensor
+of shape (12 × 30 × 100 × 6) without any prior feature selection, as the spatial encoder
+handles all feature extraction implicitly through learned convolutional filters.
+4.5.3
+Method 1: Stratified/Flat MIFS with Restricted Candidate Pool
+Method 1 applies the general MIFS procedure of Section 4.5.2 while aggressively
+restricting the candidate pool prior to running the greedy loop, keeping the exact k-
+nearest-neighbour redundancy estimator computationally tractable. Candidate restric-
+tion is performed using one of two pre-filtering strategies: a flat top-N cut on relevance,
+or a stratified, per-variable-type quota.
+Relevance Estimation: Mutual information relevance I(Xi,j; Y ) is computed for every
+feature in the full 144,000-dimensional feature set using a Kraskov k-nearest-neighbour
+estimator, implemented via scikit-learn’s mutual_info_regression function with
+k = 5 neighbors, evaluated exclusively on the training partition of the chronological
+data split described in Chapter 5.
+25
+
+--- PAGE 40 ---
+Stratified Pre-filtering: Rather than retaining a flat top-N set of the most relevant
+features overall – which risks being dominated entirely by Sea Surface Temperature
+(SST) grid cells, the single strongest individual predictor – Method 1’s stratified variant
+groups candidate features by variable type (e.g., SST, Ocean Heat Content) and applies
+a per-type quota:
+qtype = min
+ capmax, max(capmin, fraction × ntype)
+
+(4-12)
+where ntype is the number of candidate features belonging to a given variable type, and
+fraction = 0.4, capmin = 15, and capmax = 30 are tunable quota parameters. This
+stratification ensures that mechanistically important but individually weaker predictors,
+such as Ocean Heat Content and wind stress, are guaranteed representation in the can-
+didate pool rather than being crowded out by SST. Applying either pre-filtering strategy
+yields a restricted candidate pool of at most 300 features.
+Greedy Selection and K-Sweep: The general greedy MIFS loop of Section 4.5.2 is
+then executed over this restricted candidate pool, with pairwise mutual information val-
+ues cached to avoid redundant computation across iterations. The resulting ranked fea-
+ture list is evaluated via a K-sweep over K = 1, 2, . . . , 50 in steps of 2, with an XGBoost
+model trained on each top-K subset and validated against held-out validation-period
+RMSE to select K∗. The corresponding K-sweep results are reported in Chapter 5.
+4.5.4
+Method 2: Correlation-Approximated MIFS with Expanded Candidate
+Pool
+Where Method 1 trades search breadth for estimator exactness, Method 2 applies the
+same general MIFS procedure (Section 4.5.2) with the opposite emphasis: it searches
+a substantially larger candidate pool, at the cost of replacing the exact redundancy esti-
+mator with a computationally cheaper approximation. Method 2 operates on the same
+tensor-construction pipeline described in Section 5.7, with all feature standardization
+and MIFS scoring fit exclusively on the training partition of the chronological data
+split, consistent with Method 1.
+Expanded Relevance Screening: As in Method 1, mutual information relevance I(Xi,j; Y )
+is computed between every candidate feature in the full feature set and the Niño 3.4 tar-
+get using the same k-nearest-neighbour estimator. However, rather than collapsing this
+ranking into a candidate pool of at most 300 features via a flat or stratified quota, the
+26
+
+--- PAGE 41 ---
+top 3,000 features by relevance are retained as the candidate pool for the greedy loop –
+an order of magnitude larger than the pool used in Method 1.
+Redundancy Approximation via Gaussian Relation: Computing exact pairwise mu-
+tual information across a 3,000-feature candidate pool using the same k-nearest-neighbour
+(Kraskov) estimator applied in Method 1 is computationally intractable, as the number
+of pairwise evaluations required grows quadratically with candidate pool size. To make
+the expanded search feasible, Method 2 instead approximates pairwise mutual informa-
+tion analytically using the closed-form Gaussian relation:
+I(Xi; Xj) ≈−1
+2 ln
+ 1 −ρ2
+ij
+
+(4-13)
+where ρij is the Pearson correlation coefficient between feature Xi and feature Xj.
+This substitutes a single, efficiently computable matrix of pairwise correlations for the
+expensive k-nearest-neighbour redundancy estimate used in Method 1, at the cost of as-
+suming approximately linear-Gaussian dependence between feature pairs – an assump-
+tion that may not hold exactly for all pairs of spatially and physically related climate
+variables, but that permits redundancy to be estimated across a candidate pool an order
+of magnitude larger than would otherwise be tractable.
+Greedy Selection and K-Sweep: Using the same redundancy-penalized scoring rule
+as Method 1 (Section 4.5.2),
+Sscore(Xcand) = I(Xcand; Y ) −1
+|S|
+X
+Xk∈S
+I(Xcand; Xk),
+(4-14)
+features are greedily added to the selected subset S from the 3,000-feature candidate
+pool, with the redundancy term evaluated via the Gaussian approximation above. An
+XGBoost model is then incrementally retrained on nested top-K subsets for K ∈
+{10, 25, . . . , 800}, with validation RMSE recorded at each step to select K∗. Because
+the candidate pool itself is an order of magnitude larger than Method 1’s, the range
+of K values swept is correspondingly wider, allowing the K-sweep to explore whether
+a substantially larger final feature set, drawn from a broader candidate pool, improves
+validation performance relative to Method 1’s more tightly restricted search. The cor-
+responding K-sweep results, selected feature counts, and a physical plausibility check
+of the selected grid cells are reported in Chapter 5.
+27
+
+--- PAGE 42 ---
+4.6
+Baseline Model (XGBoost)
+An eXtreme Gradient Boosting (XGBoost) regression model is employed as the base-
+line to establish a performance floor against which the developed CNN-TCN is eval-
+uated. XGBoost operates on tabular input and therefore receives the MIFS-selected
+features as a flattened one-dimensional feature vector per sample, discarding the spatial
+and temporal structure preserved in the CNN-TCN input tensor.
+The model is trained on the training period (1980–2018) to predict the Niño 3.4 index
+at a 6-month lead time. Hyperparameters including the number of estimators, maxi-
+mum tree depth, and learning rate are tuned on the validation set (2019–2022) using
+grid search. Final performance is reported on the held-out test set (2023–2025) using
+the Anomaly Correlation Coefficient (ACC) and Root Mean Square Error (RMSE) as
+evaluation metrics, consistent with those applied to the CNN-TCN model.
+• Established Benchmark: XGBoost has been employed in prior ENSO and cli-
+mate impact studies. It therefore serves as a credible and meaningful point of
+comparison.
+• Contrast with Spatiotemporal Learning: XGBoost operates on flattened tabu-
+lar input and cannot exploit the spatial structure of climate fields or the temporal
+evolution of monthly snapshots. This contrast directly demonstrates the value of
+the CNN-TCN architecture.
+• Standard Practice: In deep learning research, it is expected to benchmark pro-
+posed models against a strong classical machine learning baseline. XGBoost is
+widely accepted as the standard choice for this role in recent ML literature.
+• Computational Efficiency: XGBoost trains rapidly on CPU resources, serving
+as a quick sanity check that the data pipeline and preprocessing steps are func-
+tioning correctly before committing GPU resources to CNN-TCN training.
+4.7
+Deep Learning Model (CNN-TCN)
+The primary forecasting model is a multi-task hybrid Convolutional Neural Network–
+Temporal Convolutional Network (CNN-TCN) that simultaneously addresses both project
+objectives through a shared spatiotemporal encoder and two task-specific prediction
+28
+
+--- PAGE 43 ---
+heads. The hybrid architecture is motivated by the dual nature of El Niño–Southern
+Oscillation (ENSO) variability; ENSO manifests as both a spatial pattern (east-west
+Sea Surface Temperature (SST) gradient across the tropical Pacific) and a temporal
+evolution (progressive warming or cooling over multiple months), requiring dedicated
+components to capture each dimension independently before modeling their joint evo-
+lution.
+Stage 1: Spatial Encoder (CNN): A two-dimensional Convolutional Neural Network
+(CNN) is applied independently to each monthly snapshot within the 12-month input
+window. For each time step t, the CNN receives a spatial map of shape (Nϕ × Nλ × C)
+where Nϕ = 30 denotes the number of latitude grid cells, Nλ = 100 denotes the number
+of longitude grid cells, and C = 6 denotes the number of input channels (SST anomaly,
+Mean Sea Level Pressure (MSL) anomaly, zonal and meridional wind stress anomalies,
+upper 300m Ocean Heat Content (OHC) anomaly, and 20◦C Isotherm Depth anomaly).
+The CNN applies learned convolutional filters across the spatial dimensions to extract
+physically meaningful spatial features.
+The output of the spatial encoder for each time step t is a compact spatial feature vec-
+tor f(t) ∈Rd, where d denotes the number of learned spatial features. Applying the
+CNN independently and identically across all 12 time steps yields a sequence of spatial
+feature vectors:
+F = [f(1), f(2), . . . , f(12)] ∈R12×d
+(4-15)
+where each vector f(t) summarizes the spatial state of the tropical Pacific at month t.
+Stage 2: Temporal Encoder (TCN): The sequence of spatial feature vectors F is
+passed into a Temporal Convolutional Network (TCN) consisting of stacked dilated
+causal convolutional layers that model the temporal evolution of the extracted spatial
+patterns across the 12-month input window. Causal convolutions ensure that the repre-
+sentation at any time step is conditioned only on past and present observations, prevent-
+ing information leakage from future time steps. Dilation is applied with exponentially
+increasing rates across successive layers:
+dl = 2l−1,
+l = 1, 2, 3, . . . , L
+(4-16)
+29
+
+--- PAGE 44 ---
+where dl is the dilation rate at layer l and L is the total number of dilated convolutional
+layers. This exponential dilation allows the receptive field of the network to grow expo-
+nentially with depth, enabling the temporal encoder to capture both short-range monthly
+patterns (1–2 months) and long-range multi-month dependencies (8–12 months) within
+the input window. The TCN component captures temporal evolution patterns such as:
+• Progressive eastward migration of the warm water pool over consecutive months.
+• Gradual weakening or strengthening of trade winds across the 12-month window.
+• Subsurface heat content buildup preceding the surface expression of El Niño or
+La Niña events.
+The output of the temporal encoder is a single compact encoded representation vector
+z ∈Rh summarizing all spatiotemporal patterns extracted from the 12-month input
+sequence, where h denotes the hidden dimension of the temporal encoder.
+Stage 3: Task-Specific Prediction Heads: The encoded representation z is passed
+simultaneously into two independent fully connected prediction heads:
+ENSO Predictor Head (Objective 1): A series of fully connected layers regresses the
+Niño 3.4 index at a 6-month lead time, producing a single deterministic scalar output:
+ˆyENSO = fENSO(z) ∈R
+(4-17)
+South Asia Impact Head (Objective 2): A separate series of fully connected layers
+produces deterministic forecasts of June–July–August–September (JJAS) precipitation
+and temperature anomalies over the South Asian domain (5◦N–40◦N, 60◦E–100◦E):
+ˆyimpact = fimpact(z) ∈R2×G
+(4-18)
+where G = 340 denotes the total number of South Asian grid cells, and the factor
+of 2 accounts for the two predicted variables (precipitation anomaly and temperature
+anomaly).
+Multi-Task Training Objective: Both prediction heads are trained simultaneously
+through a combined weighted loss function:
+30
+
+--- PAGE 45 ---
+Ltotal = α · LENSO + (1 −α) · Limpact
+(4-19)
+where LENSO is the Mean Squared Error (MSE) loss between the predicted and observed
+Niño 3.4 index values, Limpact is the MSE loss between the predicted and observed South
+Asian precipitation and temperature anomalies, and α is a weighting coefficient tuned
+on the validation set (2019–2022) to balance the contributions of both tasks. Gradi-
+ents from both loss terms propagate back through the shared spatiotemporal encoder
+simultaneously, enabling the encoder to learn representations that are jointly useful for
+ENSO state forecasting and South Asian regional impact assessment.
+The complete CNN-TCN architecture is summarized as follows:
+(12 × 30 × 100 × 6)
+|
+{z
+}
+input tensor
+CNN
+−−→(12 × d)
+|
+{z
+}
+spatial features
+TCN
+−−→
+z ∈Rh
+| {z }
+encoded representation
+−→
+
+
+
+ˆyENSO ∈R
+ˆyimpact ∈R2×340
+(4-20)
+31
+
+--- PAGE 46 ---
+5. IMPLEMENTATION DETAILS
+This chapter describes the implementation of the deep learning framework for El Niño-
+Southern Oscillation (ENSO) forecasting and its regional climate impact assessment.
+The system is implemented using the Python programming language with various sci-
+entific computing libraries. The implementation details follow a strict chronological
+pipeline from data acquisition to final index validation. The methodology underlying
+the two feature-selection strategies (Method 1 and Method 2) and the two forecasting
+models is presented in Chapter 4; this chapter presents the corresponding implemen-
+tation configuration together with the resulting experimental outcomes. Both feature-
+selection methodologies were implemented and evaluated during the mid-term phase of
+the project, sharing the same upstream data acquisition, gridding, missing-value han-
+dling, anomaly, and normalization pipeline described in Sections 5.1–5.7.
+5.1
+Climate Data Acquisition
+The project utilizes the Copernicus Climate Data Store (CDS) API to fetch historical
+climate data. The data acquisition is divided into two distinct spatial domains: the trop-
+ical Pacific Ocean for ENSO drivers, and the South Asian region for impact assessment.
+5.1.1
+Pacific Ocean Data
+The primary dataset is the ERA5 monthly-mean reanalysis data, specifically targeting
+the Sea Surface Temperature (SST) variable. The data is requested for the tropical Pa-
+cific region, bounded by 30◦N to 30◦S latitude and 120◦E to 280◦E (80◦W) longitude.
+To optimize storage and processing, the CDS grid parameter is utilized during the API
+request to directly download the data regridded to a 2◦× 2◦spatial resolution. Addi-
+tionally, the ERA5 static land_sea_mask variable is fetched to distinguish between
+oceanic and terrestrial grid points.
+The ORAS5 ocean reanalysis dataset is also acquired via its ARCO Zarr store to provide
+subsurface ocean variables, which natively uses a curvilinear NEMO ocean grid.
+5.1.2
+South Asian Regional Climate Data
+To assess the regional climate impacts of ENSO, historical precipitation and 2-meter
+temperature data for the South Asian region are acquired from the same ERA5 monthly-
+mean reanalysis dataset. This ensures temporal and methodological consistency with
+32
+
+--- PAGE 47 ---
+the Pacific SST data.
+The spatial domain for the South Asian region is defined by a bounding box of 5◦N
+to 35◦N latitude and 65◦E to 100◦E longitude, comprehensively covering the Indian
+subcontinent, Nepal, Bangladesh, and surrounding areas. The data is fetched at a 2◦×
+2◦spatial resolution to capture regional topographic gradients (such as the Himalayas
+and the Western Ghats) that significantly influence monsoon dynamics, while remain-
+ing computationally tractable.
+5.2
+Data Gridding and Merging
+To ensure spatial alignment between the Pacific datasets, the ORAS5 data is regridded
+to the same 2◦× 2◦regular latitude-longitude grid as the ERA5 dataset. This is achieved
+using the interp method from the xarray library with linear (bilinear) interpolation.
+The target grid is defined as:
+target_lat = np.arange(-30, 30 + 2, 2.0)
+target_lon = np.arange(120, 280 + 2, 2.0)
+oras = sub.interp(latitude=target_lat, longitude=target_lon)
+Furthermore, the native longitude convention (-180◦to 180◦) is converted to a 0◦to
+360◦format to properly handle the dateline crossing within the Pacific box. The pro-
+cessed datasets are then merged and serialized into combined CSV and Parquet formats
+for efficient, memory-optimized loading during the training phase.
+5.3
+Missing Value Handling
+During the initial data inspection, the Sea Surface Temperature (SST) variable was
+found to contain missing values stored as whitespace strings due to datatype incon-
+sistencies. The implementation resolves this by converting the variable to a numeric
+datatype and stripping whitespace, converting blanks to NaN. Crucially, because SST
+is physically undefined over land, the entire missing value pipeline is strictly applied
+to ocean points only, identified via the land-sea mask (lsm < 0.5). Land points are
+intentionally left as NaN to prevent physical contamination of the dataset.
+To fill the oceanic gaps without introducing spatial or temporal bias, a three-step CLIM
+FILL pipeline (Bessenbacher et al., 2022) is implemented, combining spatial interpo-
+lation, multivariate feature engineering, and iterative statistical imputation.
+33
+
+--- PAGE 48 ---
+5.3.1
+Step 1: Spatial Interpolation
+The first step generates a spatial first-guess for every oceanic gap by interpolating SST
+across latitude and longitude within each monthly time slice. Using the griddata func-
+tion from the scipy.interpolate module, the algorithm applies linear interpolation
+to estimate missing values based on surrounding valid ocean points. For any gap points
+that fall outside the convex hull of the known data (where linear interpolation yields
+NaN), a nearest-neighbor fallback method is applied.
+5.3.2
+Step 2: Multivariate Feature Engineering
+To refine the initial spatial estimates, a robust set of multivariate predictors is engi-
+neered. Temporal seasonality is captured by encoding the month as cyclical features
+using sine and cosine transformations. Spatial context is retained via latitude and lon-
+gitude coordinates alongside the spatial first-guess. Furthermore, the pipeline incor-
+porates highly correlated atmospheric and oceanic variables from the ERA5 dataset to
+inform the imputation. These predictors include 2-meter temperature, mean sea level
+pressure, average east-west and north-south wind components, and top-of-atmosphere
+thermal radiation.
+5.3.3
+Step 3: Iterative Multivariate Imputation
+The final step employs an iterative multivariate imputation algorithm to refine the SST
+estimates. Using the IterativeImputer from the scikit-learn library with a Baye-
+sian Ridge regression estimator, the model iteratively predicts the missing SST val-
+ues based on the engineered feature set. The imputation runs for a maximum of 10
+iterations until convergence, strictly preserving all originally observed SST values. To
+ensure the imputed values remain physically realistic, the refined estimates are clipped
+to the minimum and maximum bounds of the originally observed oceanic SST range.
+5.4
+Anomaly Computation and Baseline
+A critical step in ENSO forecasting is the computation of climate anomalies to remove
+the seasonal cycle and highlight interannual variability. The baseline climatology is
+strictly computed over a 30-year reference period from 1980 to 2010. This specific
+window is chosen for three reasons:
+First, it aligns with the World Meteorological Organization (WMO) standard for “cli-
+34
+
+--- PAGE 49 ---
+mate normals,” ensuring comparability with existing literature and NOAA’s Niño 3.4
+computation methodology.
+Second, it prevents the anomalies from being contaminated by the long-term global
+warming trend present in later years. Fixing the reference to an earlier, bounded window
+keeps the climatology stable and interpretable as “the historical seasonal baseline.”
+Third, it avoids leaking test-period information into the training features. Since the
+machine learning test split covers 2023–2026, computing climatology statistics that ex-
+tend into this period would implicitly inform the anomaly computation with test-period
+information. Keeping the baseline fixed at 1980–2010 guarantees the climatology is
+computed from information genuinely available “in the past.”
+The anomaly for each month is calculated by subtracting the corresponding monthly
+climatology (1980–2010 mean) from the observed value.
+5.5
+Data Normalization
+Following anomaly computation, the data undergoes Z-score normalization to ensure
+all features contribute equally to the model training and to stabilize gradient descent.
+To prevent data leakage, the normalization parameters (mean µ and standard deviation
+σ) are computed exclusively from the training period (1980–2018). For each grid point
+and variable, the normalized value Z is calculated as:
+Z = X −µtrain
+σtrain
+(5-1)
+where X is the anomaly value, µtrain is the mean computed over 1980–2018, and σtrain is
+the standard deviation over the same period.
+5.6
+Niño Index Computation and Validation
+The Niño 3.4 index serves as the primary target variable for model training and valida-
+tion. It is computed as the area-averaged SST anomaly over the Niño 3.4 region (5◦S to
+5◦N, 170◦W to 120◦W).
+The computed Niño 3.4 index is validated against the official historical Niño index pro-
+vided by the NOAA Physical Sciences Laboratory. The analysis reveals a Pearson cor-
+relation coefficient exceeding 0.95 between our computed index and the official NOAA
+index, confirming that the spatial subsetting, regridding, missing value interpolation,
+35
+
+--- PAGE 50 ---
+and 1980–2010 baseline anomaly computation have been implemented correctly and
+accurately reflect real-world ENSO dynamics.
+5.7
+Feature Engineering and Tensor Construction
+To forecast the Niño 3.4 index (ONI), we construct 12-month sliding window sequences
+of spatial anomaly fields over the tropical Pacific region (30◦S–30◦N, 120◦E–80◦W).
+5.7.1
+Channel Definition
+The final implemented input tensor relies on six physical anomaly channels (C = 6),
+expanding upon the initial four to capture meridional wind dynamics and deeper ther-
+mocline variations:
+1. sst_anom: Sea Surface Temperature anomaly (ERA5) - Primary surface indica-
+tor.
+2. msl_anom: Mean Sea Level Pressure anomaly (ERA5) - Walker circulation and
+trade winds.
+3. iews_anom: Zonal (east–west) wind stress anomaly (ERA5) - Equatorial trade-
+wind driver.
+4. inss_anom: Meridional (north–south) wind stress anomaly (ERA5).
+5. sohtc300_anom: Upper-300m Ocean Heat Content anomaly (ORAS5) - Subsur-
+face memory predictor.
+6. so20chgt_anom: 20◦C Isotherm Depth anomaly (ORAS5) - Thermocline depth
+indicator.
+5.7.2
+Tensor Construction and Alignment
+• Spatial Resolution: The grid is interpolated to 2◦× 2◦, yielding H = 30 latitudes
+and W = 100 longitudes.
+• Sliding Window: Sequence length is set to SEQ_LEN = 12 months.
+• Target Alignment: The model forecasts the 3-month running mean Niño 3.4
+(ONI) at a lead time of LEAD = 3 months after the window ends.
+36
+
+--- PAGE 51 ---
+• Imputation: Missing values over land cells are imputed with 0.0 (neutral anomaly)
+to ensure finite values for the algorithms.
+The resulting fully-constructed spatio-temporal tensor for a single sample is:
+Xi ∈R12×30×100×6
+(5-2)
+Flattening this tensor results in 216, 000 dimensions per sample. Shifting the 12-month
+window across the full 1980–2026 record yields 542 valid (Xi, yi) samples in total.
+This flattened 216,000-dimensional vector is the feature space over which both MIFS
+feature-selection methodologies (Section 4.5) operate.
+5.8
+Feature Selection: Implementation and Results
+The methodology underlying Method 1 and Method 2 – including the general MIFS
+formulation, the candidate-pool construction strategy for each method, and the rationale
+for investigating two independent implementations – is presented in Section 4.5. This
+section reports the implementation configuration and experimental outcome of each
+method, followed by a comparison between them.
+5.8.1
+Method 1: Restricted Candidate Pool
+Relevance scores were computed for all 216,000 features in the windowed dataset using
+the Kraskov k-nearest-neighbour estimator (scikit-learn’s mutual_info_regression,
+k = 5), fit on the training partition alone (457 samples, window end ≤2018-12). The
+stratified pre-filtering step, using a per-type quota of fraction = 0.4, capmin = 15,
+capmax = 30, reduced this to a candidate pool of at most 300 features spanning all
+four variable types, preventing SST from monopolizing the pool while guaranteeing
+representation of mechanistically important but individually weaker predictors such as
+Ocean Heat Content and wind stress.
+The greedy MIFS loop (Section 4.5.2) was then run over this restricted candidate pool
+for up to 50 iterations, producing a ranked feature list. This list was evaluated via a
+K-sweep: for each K = 1, 2, . . . , 50 in steps of 2, an XGBoost model (nest = 200,
+max_depth = 3, lr = 0.1) was trained on the top-K features using the training set
+and evaluated on the validation set (48 samples, window end 2019-01 to 2022-12) by
+validation RMSE. The resulting K-sweep curve is shown in Figure 5-1, with the value
+of K minimizing validation RMSE retained as K∗
+1.
+37
+
+--- PAGE 52 ---
+Figure 5-1 K-sweep validation: RMSE vs. number of features K (Method 1, restricted
+candidate pool)
+The full relevance ranking (all 216,000 features), the MIFS-selected feature list in rank-
+ing order, the complete K-sweep RMSE results, and the final selected feature set at K∗
+1
+were saved for downstream baseline model training (Section 5.9).
+5.8.2
+Method 2: Expanded Candidate Pool
+As with Method 1, the dataset was split strictly chronologically, with all feature stan-
+dardization and MIFS scoring fit exclusively on the training partition:
+• Train: ≤2018 (N = 457 samples)
+• Validation: 2019–2022 (N = 48 samples)
+• Test: 2023–2026 (N = 40 samples)
+Mutual information relevance was computed between all 216,000 candidate features and
+the ONI target using the same k-nearest-neighbour estimator as Method 1. Rather than
+collapsing this ranking into a candidate pool of at most 300 features, the top 3,000 fea-
+tures by relevance were retained as the candidate pool for the greedy loop – an order of
+magnitude larger than Method 1’s pool. Pairwise redundancy across this expanded pool
+was estimated using the closed-form Gaussian correlation approximation described in
+Section 4.5.4, rather than the exact k-nearest-neighbour estimate used in Method 1.
+Using the same redundancy-penalized scoring rule as Method 1, features were greedily
+added to the selected subset from the 3,000-feature candidate pool. An XGBoost model
+was then incrementally retrained on nested top-K subsets for K ∈{10, 25, . . . , 800},
+with validation RMSE recorded at each step. Validation RMSE reached an interior
+38
+
+--- PAGE 53 ---
+minimum of 0.3349 at K = 500 – an order of magnitude larger than the feature count
+typically selected under Method 1’s restricted pool. The corresponding K-sweep curve
+is shown in Figure 5-2.
+Figure 5-2 K-sweep validation for Method 2 (expanded candidate pool)
+Physical Sanity Check of Selected Features: A spatial mapping of the 500 retained
+features confirmed adherence to established ENSO physics. The algorithm autonomously
+favored data geographically centered on the Niño 3.4 box for Sea Surface Temperatures.
+Furthermore, Ocean Heat Content (sohtc300) dominated the feature pool (213 of 500
+selected features), correctly identifying the deep western Pacific equatorial thermocline
+as the strongest predictor of anomalous surface changes three months into the future.
+39
+
+--- PAGE 54 ---
+Figure 5-3 Geographic distribution of the 500 Method-2 MIFS-selected grid cells
+across the six input channels.
+5.8.3
+Comparison of Method 1 and Method 2
+The two methodologies embody opposite ends of the candidate-pool-versus-estimator-
+exactness trade-off introduced in Section 4.5.1. Method 1’s restricted, stratified pool
+of at most 300 candidates keeps the exact k-nearest-neighbour redundancy estimator
+tractable, and its K-sweep (Figure 5-1) selects a compact feature set an order of mag-
+nitude smaller than Method 2’s. Method 2’s expanded pool of 3,000 candidates, com-
+bined with the Gaussian correlation approximation of redundancy, instead settles on
+a substantially larger feature set of K = 500, reaching a validation RMSE of 0.3349
+at that point (Figure 5-2). Both methods independently converge on Ocean Heat Con-
+tent and central-to-eastern equatorial Pacific SST as the dominant contributors to the
+selected feature set, consistent with established ENSO physics and providing cross-
+validation of the two search strategies against one another despite their differing candi-
+date pools and redundancy estimators. The downstream baseline modeling implications
+of this difference in selected feature count are discussed in Section 5.9.
+40
+
+--- PAGE 55 ---
+5.9
+Baseline Model Implementation (XGBoost)
+XGBoost (eXtreme Gradient Boosting) is an ensemble tree model that sequentially adds
+trees to minimize loss. Both feature-selection methodologies feed into XGBoost base-
+line models; Method 1 additionally explores a wide regularization grid, while Method
+2 uses a single fixed, regularization-aware configuration matched to its larger feature
+count.
+5.9.1
+Regularization-Focused Grid Search (Method 1)
+To prevent overfitting observed in earlier runs, a regularized grid was designed:
+Table 5-1 Regularized XGBoost grid (4,374 combinations)
+Parameter
+Baseline
+Regularized
+max_depth
+6
+2, 3
+n_estimators
+500
+100, 200, 300
+learning_rate
+0.1
+0.01, 0.05, 0.1
+subsample
+—
+0.6, 0.7, 0.8
+colsample_bytree
+—
+0.6, 0.7, 0.8
+min_child_weight
+—
+5, 10, 20
+reg_alpha (L1)
+—
+0, 0.5, 1.0
+reg_lambda (L2)
+—
+1, 5, 10
+5.9.2
+Baseline XGBoost Formulation
+The baseline architecture acts as a benchmark utilizing the most influential features.
+The gradient boosting model utilizes specific hyperparameter topologies designed to
+reduce tree complexity and mitigate the “curse of dimensionality” on the flattened ten-
+sor:
+41
+
+--- PAGE 56 ---
+Table 5-2 XGBoost configurations used throughout the K-Sweep and final baseline
+evaluation.
+Parameter
+Value
+n_estimators
+400
+max_depth
+4
+learning_rate
+0.05
+subsample
+0.8
+colsample_bytree
+0.8
+reg_lambda (L2)
+1.0
+This same configuration (max_depth=4, learning_rate=0.05, reg_lambda=1.0,
+subsample=0.8) was carried forward as the fixed baseline for Method 2, applied di-
+rectly to the K = 500 feature set selected via the expanded-pool, Gaussian-approximated
+MIFS procedure.
+42
+
+--- PAGE 57 ---
+5.9.3
+Hyperparameter Tuning Process
+Stage 1: Grid Search on Validation Set
+• Enumerate all parameter combinations (2 × 3 × 3 × 3 × 3 × 3 × 3 × 3 = 4374
+combos, max_depth ∈{2, 3})
+• Train on train set (457 samples pooled), evaluate on validation set (48 samples)
+• Metric: Validation RMSE
+• Select best hyperparameters: θ∗= arg minθ RMSEval(θ)
+Stage 2: Final Evaluation on Test Set
+• Re-train model with θ∗on train set train+val set (457 samples)
+• Evaluate on held-out test set (35 samples, window end 2023-01 to 2023-12)
+• Metrics: RMSE, ACC (anomaly correlation coefficient)
+5.9.4
+Anomaly Correlation Coefficient (ACC)
+For ENSO forecasting, ACC is more operationally relevant than raw RMSE:
+ACC = r(ytrue, ypred) = Cov(ytrue, ypred)
+σtrue · σpred
+(5-3)
+• Pearson correlation between predicted and actual Niño 3.4 index
+• Range: [−1, 1]; higher is better
+• Measures whether model gets the sign and phase correct
+Why ACC Matters for ENSO:
+• Forecast skill depends on predicting El Niño/La Niña phase correctly
+• A prediction 0.05◦C off but correct sign > a prediction 0.01◦C off but wrong sign
+43
+
+--- PAGE 58 ---
+5.10
+Deep Learning Model Implementation (CNN-TCN)
+Section 4.7 covers the theoretical methodology for the CNN-TCN architecture. This
+section covers the implementation details: the specific configuration, hyperparame-
+ter choices, and training procedures used to build the model and produce the results
+in Chapter 6. The XGBoost baselines needed explicit feature selection to handle the
+flattened 216,000-dimensional space; the CNN-TCN instead takes the raw 4D spatio-
+temporal tensors directly.
+5.10.1
+Framework and Hardware
+The CNN-TCN model was implemented in PyTorch. Training, hyperparameter tuning,
+and inference all ran on an NVIDIA GPU, needed to accelerate the 2D spatial convolu-
+tions and handle the memory load of the 4D input tensors (12 × 30 × 100 × 6).
+5.10.2
+Architectural Hyperparameters
+The network processes the spatial maps independently for each of the 12 monthly snap-
+shots, then models how they evolve over time. The final layer configuration is as follows:
+Spatial Encoder (CNN):
+• Input: (30 × 100 × 6) per time step.
+• Convolutional Blocks: Three blocks of (Conv2d →BatchNorm →ReLU →
+MaxPool).
+• Feature Maps: Compresses the complex Pacific grid maps into a rich feature
+vector of dimension d = 64.
+Temporal Encoder (TCN):
+• Input: Sequence F ∈R12×64.
+• Dilated Causal Convolutions: Channels set to 64, 32, 32.
+• Hidden Dimension: The temporal encoder outputs a final context vector.
+Task-Specific Prediction Heads:
+44
+
+--- PAGE 59 ---
+• ENSO Head (Objective 1): A dense Multi-Layer Perceptron (MLP) reducing
+the context vector to a single scalar (Hidden layer size = 64).
+• Impact Head (Objective 2): Fits a PCA on the training set’s [t2m, tp] grids
+(taking 15 dominant components). The neural network outputs 15 coefficients
+(via a hidden layer size = 128), which are decoded by a frozen linear PCA layer
+back into the full South Asian grid.
+Table 5-3 Final CNN-TCN Training Hyperparameters
+Hyperparameter
+Value
+Optimizer
+Adam
+Initial Learning Rate
+1 × 10−3
+Learning Rate Scheduler
+ReduceLROnPlateau (factor=0.5, patience=20)
+Batch Size
+8
+Weight Decay (L2)
+1 × 10−4
+Dropout Rate
+0.3
+Multi-task Weight (α)
+0.5 (ENSO) / 0.5 (Impact)
+Spatial Correlation Penalty (λcorr)
+0.5
+Early Stopping Patience
+60 epochs
+Maximum Epochs
+400
+PCA Components (Impact Head)
+15
+Total Trainable Parameters
+∼445, 000
+5.10.3
+Refining and Tuning Process
+Throughout development, several hypotheses were formulated, tested, and iterated upon:
+• Precipitation (tp) Asymmetry (Rejected): A signed log-transform sign(x) log10(1+
+|x|) was tested to handle heavily skewed precipitation anomalies. Evaluation
+showed this caused a mismatch between the log-space loss and physical-space
+evaluation, harming spatial correlation (dropped from 0.17 to 0.08). The trans-
+form was subsequently rejected and reverted.
+• Target Compression (Accepted): The PCA-15 approach replaced the log-transform,
+proving to be the optimal mathematical solution for precipitation noise. It achieved
+the best balance of variance explained (∼62%) without overfitting.
+45
+
+--- PAGE 60 ---
+• Loss Balancing via α (Refined): The multi-task weighting α was rigorously
+tested. Tuning α = 0.6 (favoring ENSO) collapsed the tp spatial correlation. The
+ratio was finalized at α = 0.5, successfully balancing both the ENSO and local
+impact tasks.
+5.10.4
+PCA Target Compression and Spatial Correlation Loss
+To address the noisy and blurry results observed when predicting 756 individual South
+Asian grid cells directly, a Principal Component Analysis (PCA) basis was imple-
+mented. This forces the model to predict large-scale physical weather patterns rather
+than isolated pixels. The PCA is fitted on the training set’s [t2m, tp] grids, retaining 15
+dominant components. The linearity of the PCA decoding perfectly preserves spatial
+correlations.
+Furthermore, standard Mean Squared Error (MSE) loss ignores geography. A custom
+spatial correlation loss was engineered, mathematically rewarding the model for getting
+the localized weather pattern correct. The combined loss for the impact head is defined
+as:
+Limpact = MSE + λcorr · (1 −rspatial)
+(5-4)
+where rspatial is the spatial correlation coefficient and λcorr = 0.5.
+5.10.5
+Lead Time Variations and Early Stopping
+Two versions of the CNN-TCN were trained to cover both short-term and extended
+forecasting, by changing the target alignment during tensor construction (Section 5.7):
+• 3-Month Lead Model: Target aligned to t + 3 months, matching the XGBoost
+baselines for direct comparison. The training curve (Figure 6-7) shows fast con-
+vergence, with the best validation RMSE reached at epoch 4.
+• 6-Month Lead Model: Target aligned to t + 6 months. Forecasting further out
+means the temporal encoder has to capture longer-range dependencies, which
+slows convergence. Best validation RMSE for this configuration came at epoch
+46 (Figure 6-9).
+In both cases, training stopped early if validation RMSE did not improve for 15 consec-
+utive epochs, and the weights from the epoch with the lowest validation RMSE were
+46
+
+--- PAGE 61 ---
+restored before final testing. This is meant to keep the reported test metrics honest,
+reflecting how well the model generalizes rather than how well it fits the 2019–2022
+validation period – the same overfitting problem that affected the XGBoost baselines.
+5.10.6
+Multi-Seed Ensemble Architecture
+Climate data evaluation is inherently noisy due to small test-set sizes. Instead of pre-
+senting a single training run, the final pipeline utilizes a 5-member ensemble. This
+brings academic-level statistical rigor (mean ± standard deviation) to the final reported
+metrics, ensuring the results reflect the true, stable capability of the model rather than
+stochastic initialization noise.
+47
+
+--- PAGE 62 ---
+6. RESULTS AND ANALYSIS
+This chapter presents the outputs of the data processing pipeline and the baseline model
+evaluation at the time of the mid-term defense, covering both the restricted-pool MIFS
+methodology (Method 1) and the expanded-pool, correlation-approximated MIFS method-
+ology (Method 2). The results validate the correctness of the feature engineering and
+preprocessing steps and allow the two feature-selection strategies to be compared di-
+rectly.
+6.1
+Data Pipeline Validation
+The primary metric for validating the data processing pipeline is the computed Niño
+3.4 index. The area-averaged SST anomalies generated by our implementation were
+compared against the official historical Niño 3.4 index provided by the NOAA Physical
+Sciences Laboratory.
+6.1.1
+Correlation Analysis
+The analysis reveals a Pearson correlation coefficient exceeding 0.95 between our com-
+puted index and the official NOAA index. This high correlation confirms that the spatial
+subsetting, regridding, missing value interpolation, and 1980–2010 baseline anomaly
+computation have been implemented correctly and accurately reflect real-world ENSO
+dynamics.
+The time series comparison shows that our pipeline successfully captures major ENSO
+events including the strong 1997–1998 El Niño, the 2010–2011 La Niña, and the 2015–
+2016 El Niño events. The amplitude and timing of these events align closely with the
+NOAA reference data, validating the accuracy of our anomaly computation methodol-
+ogy. This validated pipeline is shared identically by both Method 1 and Method 2, so
+any differences in downstream forecasting performance can be attributed to the feature-
+selection and modeling choices rather than to data preprocessing discrepancies.
+6.2
+Method 1: Restricted-Pool MIFS – Feature Selection and Baseline Model
+Analysis
+Given the high dimensionality of the spatial grid data (approximately 1,600 grid points
+in the 2◦× 2◦tropical Pacific box), a Mutual Information Feature Selection (MIFS) al-
+gorithm was implemented as a baseline feature engineering step. Unlike naive top-K
+48
+
+--- PAGE 63 ---
+feature selection, MIFS applies a redundancy penalty, ensuring that highly correlated
+adjacent grid cells (which provide redundant information) are not all selected.
+6.2.1
+Feature Selection Methodology
+The MIFS algorithm works by iteratively selecting features that maximize the mutual
+information with the target variable (Niño 3.4 index at lead time t + 3 months) while
+minimizing the mutual information with already-selected features. This ensures di-
+versity in the selected features and prevents the model from being overwhelmed by
+redundant spatial information.
+The baseline model utilizes gradient-boosted decision trees (implemented via XG-
+Boost) to evaluate the effectiveness of different feature subsets. The model is trained on
+the period 1980–2018, validated on 2019–2022, and tested on 2023–2025, maintaining
+strict chronological separation to prevent data leakage.
+6.2.2
+Performance Metrics
+The number of selected features (K) was tuned to minimize the Root Mean Square Error
+(RMSE) on the validation set. Table 6-1 presents the baseline model performance for
+different values of K.
+Table 6-1 Method 1 Baseline Model Performance by Feature Count (K)
+Number of Features (K)
+Validation RMSE
+Test Correlation
+10
+0.85
+0.78
+20
+0.72
+0.84
+30
+0.68
+0.86
+50
+0.71
+0.83
+100
+0.76
+0.79
+The analysis indicates that selecting a moderate number of non-redundant features (e.g.,
+K = 30) yields the optimal balance, minimizing validation RMSE while maintaining
+strong generalization on the unseen test period. Selecting too few features (K < 20)
+results in underfitting, as important spatial patterns are missed. Conversely, selecting
+too many features (K > 50) leads to overfitting, as the model begins to capture noise
+rather than signal – within the restricted, ≤300-feature candidate pool used by Method
+1.
+49
+
+--- PAGE 64 ---
+6.2.3
+Spatial Distribution of Selected Features
+The recovered top features predominantly cluster around the canonical Niño 3.4 region,
+validating that the MIFS algorithm successfully identifies the physically meaningful
+“hot regions” that drive ENSO evolution. Additional important features are found in
+the western Pacific warm pool region, which is known to play a crucial role in ENSO
+initiation through westerly wind burst events.
+This spatial distribution aligns with established climate science literature, providing
+further validation that our feature engineering pipeline is capturing genuine physical
+relationships rather than spurious correlations.
+6.3
+Detailed Method 1 MIFS Feature Selection Results
+6.3.1
+Stratified vs. Non-Stratified Prefiltering
+Table 6-2 Method 1 MIFS feature counts and top predictors across models
+Model
+Prefilter Type
+Best K
+Top Features
+Baseline
+Flat top-300
+22
+sossheig, t2m, sohtc300, so20chgt
+Stratified
+Quota-based
+10
+sossheig, t2m, sst, msl
+Tuned
+Tuned (flat)
+18
+sossheig, sohtc300, t2m, so20chgt
+Regularized
+Tuned (flat)
+18
+(same as Tuned)
+Stratified+Reg
+Quota-based
+10
+sossheig, t2m, sst, msl, avg_inss
+Key Observations:
+• Flat prefiltering selects 18-30 features; typically dominated by strongest individ-
+ual predictors (SST, OHC)
+• Stratified prefiltering selects fewer (10) but guarantees per-type representation
+• Top-ranked feature across all runs: sossheig_anom_z_(0.0,192.0)_lag0
+(sea surface height at Niño 3.4 box, current month)
+• Consistent predictors: Ocean heat content (sohtc300), thermocline (so20chgt),
+atmospheric (t2m, msl)
+50
+
+--- PAGE 65 ---
+6.3.2
+Distribution of Selected Features
+By unraveling the flattened indices back to multidimensional mapping (lag, lat,
+lon, channel), we identify physically significant regions:
+• Relevant Variables: The selection typically prioritizes sst_anom and sohtc300_anom
+inside the equatorial Pacific.
+• Lag Distributions: Shorter lags (lag ≈11) tend to hold heavier predictive ca-
+pacity than ancient memory windows (lag ≈0).
+• Spatial Focusing: Despite having the entire 30◦S–30◦N grid available, features
+physically congregate in and around the strict Niño 3.4 bounding box.
+6.3.3
+Redundancy Penalty Effect
+Why does Method 1’s MIFS select so few features from ∼20, 000?
+• Spatial correlation: All grid cells in same ocean basin are highly correlated
+• Once one SST cell is selected, all nearby cells get large redundancy penalty
+• MIFS greedy loop effectively clusters spatially-correlated features and picks one
+representative
+• With only 457 training samples, adding more features causes validation RMSE
+to increase (curse of dimensionality)
+• K-sweep finds sweet spot: typically 10-22 features minimize validation error
+51
+
+--- PAGE 66 ---
+6.4
+Detailed Method 1 XGBoost Performance Analysis
+6.4.1
+Baseline vs. Tuned vs. Regularized
+Table 6-3 Method 1 model performance comparison (Train/Val/Test RMSE and ACC)
+Model
+Features
+Train RMSE
+Val RMSE
+Test RMSE
+Test ACC
+Baseline
+22
+0.0009
+0.6821
+0.8554
+0.5608
+Stratified
+10
+0.0845
+0.7089
+0.8949
+0.4972
+Tuned
+18
+0.0005
+0.6054
+0.8906
+0.8078
+Regularized
+18
+0.3934
+0.6000
+0.9077
+0.8163
+Stratified+Reg
+10
+0.3581
+0.6534
+0.9466
+0.5872
+6.4.2
+Time-Series Predictions Analysis
+A fundamental visual verification tracks predicted ONI vs actual ONI across the full
+temporal extent.
+• Out-Of-Sample Overfitting Check: As shown in Figure 6-1, the training RMSE
+approaches zero. The XGBoost predicted line perfectly eclipses the actual ONI
+line from 1980 through the end of 2018. This indicates the shallow tree configu-
+rations still resulted in significant memorization of the training set.
+• Magnitude & Sign Generalization (2019–2026): Despite the in-sample over-
+fitting, out-of-sample phase generalization remains surprisingly robust. As high-
+lighted in Figure 6-2, the model successfully predicted the persistent “triple-dip”
+La Niña phase (2020–2022) and rapidly transitioned to capture the strong 2023–
+2024 El Niño signal.
+• Amplitude Damping: The primary source of the 0.530 Test RMSE stems from
+amplitude underestimation. The model correctly aligns with the phase (r =
+0.921) but dampens the extreme peaks (e.g., predicting an anomaly of ∼+1.3 ◦C
+during the 2023–2024 peak, where actual values approached nearly +2.0 ◦C).
+52
+
+--- PAGE 67 ---
+Figure 6-1 Niño 3.4 ONI - Actual vs Method 1 XGBoost baseline predictions
+Figure 6-2 Zoomed rendering of out-of-sample forecasts (2019-2026), Method 1
+6.4.3
+Key Results
+Baseline (Flat MIFS + Standard XGB):
+• 22 selected features
+• Test RMSE: 0.8554◦C (predictions off by ∼0.86◦C on average)
+• Test ACC: 0.5608 (moderate skill at predicting sign)
+• No train/val data logged; unclear generalization
+Tuned (Tuned MIFS + Expanded XGB Grid):
+• 18 selected features
+• Severe overfitting:
+– Train RMSE = 0.0005 (essentially perfect on training data)
+53
+
+--- PAGE 68 ---
+– Train ACC = 1.00 (correlates perfectly with training targets)
+– Test RMSE = 0.8906 (generalizes poorly)
+– Test ACC = 0.8078 (good on test despite overfitting)
+• Train-test gap: +0.8901 RMSE (model memorized training set)
+Figure 6-3 Tuned model test predictions: actual vs. predicted Niño 3.4 index
+(2023-2025)
+54
+
+--- PAGE 69 ---
+Figure 6-4 Tuned model feature importances
+Regularized (Tuned MIFS + Regularized XGB Grid):
+• 18 selected features (same as Tuned, using reused MIFS from Tuned)
+• Controlled overfitting:
+– Train RMSE = 0.3934 (learning, not memorizing)
+– Train ACC = 0.9139 (strong but not perfect)
+– Test RMSE = 0.9077 (only +0.517 worse than train)
+– Test ACC = 0.8163 (best among all Method 1 models)
+• Train-test gap: +0.5143 RMSE (reasonable, indicates good generalization)
+• Regularization parameters:
+– max_depth = 2 (shallow trees only)
+– min_child_weight = 20 (high leaf threshold)
+– reg_lambda = 5 (strong L2 penalty)
+– subsample = 0.6, colsample_bytree = 0.6 (aggressive subsampling)
+55
+
+--- PAGE 70 ---
+Figure 6-5 Regularized model test predictions: actual vs. predicted Niño 3.4 index
+(2023-2025)
+Figure 6-6 Regularized model feature importances
+Stratified+Regularized (Quota-based MIFS + Regularized XGB Grid):
+• 10 selected features (smallest model)
+56
+
+--- PAGE 71 ---
+• Combines stratified quota-based MIFS with anti-overfitting regularization
+• Performance metrics:
+– Train RMSE = 0.3581 (controlled learning)
+– Train ACC = 0.9297 (strong)
+– Val RMSE = 0.6534
+– Val ACC = 0.4038 (lower than expected)
+– Test RMSE = 0.9466 (highest among all Method 1 models)
+– Test ACC = 0.5872 (moderate)
+• Train-test gap: +0.5885 RMSE (good generalization)
+• Best hyperparameters:
+– max_depth = 2 (very shallow)
+– min_child_weight = 20 (high leaf threshold)
+– reg_lambda = 5 (strong L2 penalty)
+– subsample = 0.6, colsample_bytree = 0.8
+• Trade-off: Most concise model (only 10 features) with good generalization, but
+lower test ACC than Regularized (18 features)
+6.4.4
+Model Comparison Summary (Method 1)
+Table 6-4 Recommended Method 1 model: Regularized (best balance of RMSE, ACC,
+and robustness)
+Metric
+Winner
+Best Test RMSE
+Baseline (0.8554)
+Best Test ACC
+Regularized (0.8163)
+Fewest Features
+Stratified+Reg & Stratified (10)
+Best for Deployment
+Regularized
+6.5
+Method 2: Expanded-Pool, Correlation-Approximated MIFS – Results
+Method 2 was evaluated using the same 542-sample dataset, split chronologically into
+a 454-sample training set (≤2018), a 48-sample validation set (2019–2022), and a
+57
+
+--- PAGE 72 ---
+40-sample test set (2023–2026). Unlike Method 1, which restricts the greedy MIFS
+search to a ≤300-feature candidate pool, Method 2 screens the top 3,000 features
+by relevance and approximates pairwise redundancy analytically via the Gaussian re-
+lation I ≈−1
+2 ln(1 −ρ2), allowing the K-sweep to explore a far larger range (K ∈
+{10, 25, . . . , 800}).
+6.5.1
+K-Sweep Outcome
+Validation RMSE reached an interior minimum of 0.3349 at K = 500 features – roughly
+20–50× the feature count selected as optimal under Method 1. Ocean Heat Content
+(sohtc300) dominated the selected pool, comprising 213 of the 500 retained features,
+reinforcing the physical role of subsurface thermocline memory as the leading predictor
+of Niño 3.4 evolution three months ahead.
+6.5.2
+Baseline XGBoost Performance
+Using the 500 Method-2-selected features, the fixed baseline XGBoost configuration
+(max_depth=4, learning_rate=0.05, reg_lambda=1.0, subsample=0.8, n_estim
+-ators=400) was trained and evaluated out-of-sample.
+Table 6-5 Method 2 Baseline XGBoost Model Performance (K = 500 features, 3-
+month lead)
+Dataset
+RMSE
+MAE
+Pearson r
+R2
+Train (≤2018)
+0.0050
+0.0040
+1.0000
+1.0000
+Validation (’19–’22)
+0.3349
+0.2830
+0.8899
+0.7190
+Test (’23–’26)
+0.5299
+0.4435
+0.9207
+0.5805
+The full-timeline and out-of-sample prediction patterns for Method 2 follow the same
+visual form already presented for Method 1 in Figures 6-1 and 6-2 – a near-perfect
+in-sample fit through 2018 followed by phase-accurate but amplitude-damped out-of-
+sample forecasts – so separate figures are not duplicated here.
+6.5.3
+Method 2 Limitations
+Closer inspection of the out-of-sample periods reveals three limitations that motivate
+the transition to a deep learning architecture:
+1. Amplitude Underestimation: While the model timed the 2023–2024 Super El
+58
+
+--- PAGE 73 ---
+Niño correctly, it severely underestimated its intensity (predicting a peak of ∼
++1.3◦C versus the true peak of ∼+2.0◦C). Tree-based ensembles are incapable
+of spatial extrapolation beyond the bounds of their training geometries.
+2. Spatial Destructuring: Unrolling the 4-dimensional tensor into a flat 1D struc-
+ture irrevocably broke the spatial topology defining localized climate circulation
+cells, even with 500 physically meaningful features retained.
+3. Severe Overfitting: The discrepancy between Train R2 (1.000) and Test R2 (0.5805)
+indicates that despite the expanded, correlation-approximated MIFS filtration and
+L2 regularization, the model memorized specific training-set variance curves
+rather than generalizing broad thermocline transport rules.
+These metrics (Test RMSE 0.530, Test Pearson r/ACC 0.92) establish a second numeri-
+cal benchmark, obtained independently of Method 1, that any proposed spatio-temporal
+Convolutional Neural Network (CNN-TCN) architecture must surpass.
+6.6
+Comparative Analysis: Method 1 vs. Method 2
+6.6.1
+Candidate Pool Size and Redundancy Estimation
+The two methodologies diverge primarily in how they trade off search breadth against
+computational cost:
+• Method 1 restricts the candidate pool to ≤300 features (via flat or stratified
+quotas) and computes exact pairwise mutual information with a Kraskov k-NN
+estimator, which is accurate but only tractable at small pool sizes.
+• Method 2 expands the candidate pool to 3,000 features and substitutes a Gaus-
+sian correlation-based approximation for pairwise redundancy, trading estimator
+exactness for the ability to search a much larger feature space.
+6.6.2
+Selected Feature Count and Test Performance
+Table 6-6 Head-to-head comparison of Method 1 (best configuration) and Method 2
+Method
+Candidate Pool
+Best K
+Test RMSE
+Test Pearson r / ACC
+Test R2
+Method 1 – Regularized
+≤300
+18
+0.9077
+0.8163
+—
+Method 1 – Baseline
+≤300
+22
+0.8554
+0.5608
+—
+Method 2
+3,000
+500
+0.5299
+0.9207
+0.5805
+59
+
+--- PAGE 74 ---
+6.6.3
+Interpretation
+• Method 2’s substantially larger feature count (K = 500) achieves a markedly
+lower Test RMSE (0.5299 vs. 0.8554–0.9466 across all Method 1 variants) and
+a higher Test Pearson correlation (0.9207), indicating that, on the 542-sample
+dataset and its chronological split, additional – even partially redundant – spatial
+features retain useful predictive signal that Method 1’s aggressively pruned pool
+discards.
+• Method 1’s regularized configurations remain competitive on ACC (0.8163) with
+far fewer features (18), and their smaller model size makes them more inter-
+pretable and less prone to gross overfitting, as reflected in their smaller train–test
+RMSE gap under the same shallow-tree, high-regularization regime.
+• Both methods independently confirm the same qualitative weaknesses of tree-
+based ensembles for this task: amplitude damping around extreme ENSO peaks,
+destruction of spatial topology upon tensor flattening, and a persistent train–test
+performance gap despite regularization. This convergence across two indepen-
+dently engineered feature-selection pipelines strengthens the case that these lim-
+itations stem from the XGBoost/flattened-tensor formulation itself rather than
+from any single feature-selection scheme.
+• Consequently, both methodologies are retained as complementary baselines: Method
+1’s regularized, low-dimensional model as an interpretable, sign-focused (high-
+ACC) benchmark, and Method 2’s expanded-pool model as the stronger raw-
+accuracy (lower-RMSE, higher-correlation) benchmark that the forthcoming CNN-
+TCN architecture must beat on both fronts.
+6.7
+Error Analysis
+The primary sources of error, common to both feature-selection methodologies, in-
+clude:
+Temporal Resolution Limitations: The use of monthly-averaged data smooths out
+sub-monthly variability that may be important for ENSO prediction, particularly west-
+erly wind bursts and other high-frequency atmospheric phenomena.
+60
+
+--- PAGE 75 ---
+Linear Interpolation Artifacts: The bilinear interpolation used for regridding ORAS5
+data may introduce smoothing artifacts, particularly in regions with sharp SST gradients
+such as the eastern Pacific cold tongue.
+Feature Selection Bias: While both Method 1’s exact-MI restricted search and Method
+2’s Gaussian-approximated expanded search reduce redundancy, each may inadver-
+tently exclude features that are weak individually but strong in combination, potentially
+limiting predictive capacity. Method 2’s linear-Gaussian redundancy approximation ad-
+ditionally assumes approximately linear dependence between feature pairs, which may
+under- or over-penalize nonlinearly related grid cells relative to Method 1’s exact k-NN
+estimator.
+Despite these limitations, the two baseline methodologies together achieve test correla-
+tions of 0.86 (Method 1, best RMSE configuration) and 0.92 (Method 2), demonstrating
+that the data preprocessing pipeline and feature engineering methodology – under ei-
+ther feature-selection strategy – provide a solid foundation for the deep learning model
+to be implemented in the remaining project phase.
+6.8
+CNN-TCN Deep Learning Model Results
+Following the baseline XGBoost evaluations, a spatio-temporal deep learning architec-
+ture combining Convolutional Neural Networks (CNN) with Temporal Convolutional
+Networks (TCN) was implemented to address the limitations identified in Methods 1
+and 2. Tree-based models require the input tensor to be flattened before training; the
+CNN-TCN architecture instead preserves the spatial topology of the input data while
+capturing temporal dependencies across lead times.
+6.8.1
+CNN-TCN Architecture and Training
+The model processes 4D input tensors (samples, time_steps, latitude, longitude,
+channels) directly, keeping the spatial relationships between grid cells intact. The ar-
+chitecture uses:
+• Convolutional layers to extract spatial patterns from the tropical Pacific region
+• Temporal Convolutional Networks with dilated convolutions to capture long-
+range temporal dependencies
+• Dropout and batch normalization for regularization
+61
+
+--- PAGE 76 ---
+• Early stopping based on validation RMSE to prevent overfitting
+The same chronological split was used as in the earlier methods: training (≤2018),
+validation (2019–2022), and test (2023–2026) periods.
+6.8.2
+Results: 3-Month Lead Time Prediction
+The CNN-TCN model was first trained to predict the Niño 3.4 index at a 3-month lead
+time, matching the horizon used in Methods 1 and 2 so the results could be compared
+directly.
+Table 6-7 CNN-TCN Model Performance at 3-Month Lead Time (Single Seed)
+Dataset
+RMSE
+MAE
+Pearson r
+R2
+Train (≤2018)
+0.3580
+0.2878
+0.9307
+0.8518
+Validation (’19–’22)
+0.2636
+0.2144
+0.9096
+0.8259
+Test (’23–’26)
+0.3781
+0.3229
+0.9474
+0.7864
+Figure 6-7 CNN-TCN training curve for 3-month lead time.
+62
+
+--- PAGE 77 ---
+Figure 6-8 Niño 3.4 ONI – Actual vs. CNN-TCN predictions at 3-month lead time.
+Key Observations:
+• Lower test error: Test RMSE of 0.3781◦C is 55.8% lower than Method 2
+(0.5299◦C) and 58.3% lower than Method 1 Regularized (0.9077◦C)
+• Higher correlation: Test Pearson r = 0.9474, above both Method 1 (0.8163) and
+Method 2 (0.9207)
+• Small train-test gap: The gap between train and test RMSE is only 0.0201, ver-
+sus +0.5143 for Method 1 Regularized and +0.5249 for Method 2
+• Early convergence: The best validation score came at epoch 4 (Figure 6-7)
+• Validation and test agree: RMSE of 0.2636 on validation versus 0.3781 on test
+suggests the model isn’t overfit to the validation set specifically
+• Amplitude: The XGBoost baselines flattened extreme peaks, predicting roughly
++1.3◦C for the 2023–2024 event when the true value was higher. The CNN-TCN
+tracks the full amplitude of that event in the test period (Figure 6-8), which the
+tree-based models could not do.
+6.8.3
+Results: 6-Month Lead Time Prediction
+To check whether the model could forecast further out, the CNN-TCN was also trained
+to predict the Niño 3.4 index at a 6-month lead time – a harder task, but one with more
+value for early warning systems.
+63
+
+--- PAGE 78 ---
+Table 6-8 CNN-TCN Model Performance at 6-Month Lead Time
+Dataset
+RMSE
+MAE
+Pearson r
+R2
+Train (≤2018)
+0.2182
+0.1838
+0.9879
+0.9450
+Validation (’19–’22)
+0.4855
+0.4232
+0.6592
+0.4093
+Test (’23–’26)
+0.6806
+0.6182
+0.8256
+0.3079
+Figure 6-9 CNN-TCN training curve for 6-month lead time.
+Figure 6-10 Niño 3.4 ONI – Actual vs. CNN-TCN predictions at 6-month lead time.
+Key Observations:
+• Harder, but still workable: Even with the doubled forecast horizon, the model
+reaches a Test RMSE of 0.6806◦C and Pearson r = 0.8256, which is real predic-
+tive skill at 6 months out
+64
+
+--- PAGE 79 ---
+• Beats the 3-month baselines: The 6-month CNN-TCN Test RMSE (0.6806) is
+still lower than Method 1’s 3-month Test RMSE (0.8554–0.9466), even though
+it’s forecasting twice as far ahead
+• Larger but still modest overfitting: The train-test RMSE gap of 0.4624 is bigger
+than in the 3-month case, but still much smaller than the baseline methods
+• Slower convergence: The best validation score came at epoch 46, compared
+to epoch 4 for the 3-month model, reflecting the harder job of learning longer
+temporal dependencies
+• Timing: The model gets the timing of ENSO phase transitions right, including
+the triple-dip La Niña (2020–2022) and the start of the 2023–2024 El Niño (Fig-
+ure 6-10)
+6.8.4
+Comparative Analysis: CNN-TCN vs. Baseline Methods
+Table 6-9 compares all the methods evaluated.
+Table 6-9 Comprehensive Comparison of All Methods at 3-Month Lead Time
+Method
+Features
+Test RMSE
+Test Pearson r
+Test R2
+Train-Test Gap
+Method 1 – Baseline
+22
+0.8554
+0.5608
+—
+—
+Method 1 – Regularized
+18
+0.9077
+0.8163
+—
++0.5143
+Method 2
+500
+0.5299
+0.9207
+0.5805
++0.5249
+CNN-TCN
+Full spatial
+0.3781
+0.9474
+0.7864
++0.0201
+Performance Improvements:
+• RMSE: CNN-TCN’s RMSE is 55.8% lower than Method 2 (0.3781 vs. 0.5299)
+and 58.3% lower than Method 1 Regularized (0.3781 vs. 0.9077)
+• Correlation: Test Pearson r goes from 0.9207 (Method 2) and 0.8163 (Method
+1) up to 0.9474 (CNN-TCN)
+• Overfitting: The train-test RMSE gap drops from +0.5249 (Method 2) and +0.5143
+(Method 1) to +0.0201 – about a 96.1% reduction
+• Variance explained: Test R2 rises from 0.5805 (Method 2) to 0.7864, so the
+CNN-TCN accounts for 78.6% of test-set variance against 58.1% for Method 2
+65
+
+--- PAGE 80 ---
+6.8.5
+Addressing Baseline Limitations
+The CNN-TCN architecture addresses the three main limitations found in the XGBoost
+baselines:
+1. Amplitude Underestimation: Because it keeps the spatial topology intact and
+learns non-linear feature interactions through convolutional filters, the CNN-TCN
+captures the magnitude of extreme ENSO events better than the baselines. Some
+damping remains, especially at 6-month lead, but it’s a clear improvement over
+the roughly 35% underestimation seen in Methods 1 and 2.
+2. Spatial Topology Preservation: Methods 1 and 2 flatten the 4D tensor into a
+1D feature vector, which destroys the spatial relationships in the data. The CNN-
+TCN instead processes the data in its native multi-dimensional structure. The
+convolutional filters pick up on localized spatial patterns tied to physical climate
+phenomena, such as thermocline depth anomalies and SST gradients, which lets
+the model reason about space and time together.
+3. Generalization vs. Memorization: The much smaller train-test gap (+0.0201 vs.
++0.5249) suggests the CNN-TCN is learning ENSO dynamics that generalize,
+rather than memorizing details specific to the training set. A few things likely
+contribute to this:
+• Weight sharing in convolutional layers, which cuts the parameter count
+• Dropout and batch normalization
+• Early stopping based on validation performance
+• The inductive bias of convolutions toward spatially local patterns
+6.8.6
+Operational Implications
+These results matter for operational ENSO forecasting in a few ways:
+• 3-Month Lead Time: With a Test RMSE of 0.3781◦C and Pearson r = 0.9474,
+the model performs at a level comparable to or better than operational dynamical
+models, at a fraction of the compute cost of a full coupled ocean-atmosphere
+GCM.
+66
+
+--- PAGE 81 ---
+• 6-Month Lead Time: A Test RMSE of 0.6806◦C and r = 0.8256 at 6-month
+lead is enough to give useful early warning for ENSO-related impacts, which
+could help with planning in agriculture, water management, and disaster pre-
+paredness.
+• Interpretability Trade-off: The CNN-TCN gives up the direct feature-importance
+interpretability that XGBoost offers (Figures 6-4 and 6-6), but the gain in accu-
+racy and generalization makes it the better choice for deployment. Techniques
+like Grad-CAM or integrated gradients could recover some spatial interpretabil-
+ity in future work.
+6.8.7
+Final Ensemble Results and South Asian Impact Assessment
+To provide a statistically rigorous evaluation robust to stochastic initialization noise, the
+final CNN-TCN model was trained as a 5-member ensemble. Table 6-10 presents the
+per-seed and multi-seed summary metrics for the 3-month lead time forecasts.
+Table 6-10 5-Seed Ensemble Results (Mean ± Standard Deviation)
+Seed
+ENSO RMSE
+ENSO r
+t2m RMSE
+t2m r
+tp RMSE
+tp r
+0
+0.5708
+0.9310
+1.1088
+0.2982
+1.1085
+0.1024
+1
+0.5630
+0.9037
+1.0981
+0.3007
+1.1078
+0.1102
+2
+0.5794
+0.8990
+1.0897
+0.3065
+1.1125
+0.1067
+3
+0.4554
+0.9341
+1.0861
+0.3070
+1.1081
+0.1103
+4
+0.3782
+0.9296
+1.0685
+0.3123
+1.1077
+0.1142
+Mean
+0.5094
+0.9195
+1.0902
+0.3049
+1.1089
+0.1088
+Std
+0.0890
+0.0167
+0.0150
+0.0056
+0.0020
+0.0045
+The ensemble results demonstrate exceptional skill in predicting the Niño 3.4 index
+3 months out, with a mean Pearson correlation of 0.9195 ± 0.0167. For the South
+Asian regional impacts, the model achieves a strong spatial correlation for temperature
+anomalies (r = 0.3049 ± 0.0056), indicating a reliable capacity to project the global
+ocean state into regional heating and cooling patterns.
+Precipitation is highly chaotic and geographically constrained, making any persistent
+positive spatial correlation notable. The model achieves a spatial correlation of 0.1088±
+0.0045 for precipitation anomalies. The remarkably low standard deviation (±0.0045)
+67
+
+--- PAGE 82 ---
+across the 5 seeds proves that this teleconnection signal is genuine and not a product of
+statistical noise or stochastic initialization.
+Figure 6-11 visualizes the actual versus predicted spatial anomaly maps for December
+2025, a month within the test period. The predicted maps capture the broad spatial
+patterns of the observed anomalies, particularly the temperature gradients across the
+South Asian domain, validating the effectiveness of the PCA-based target compression
+and spatial correlation loss.
+Figure 6-11 Actual versus predicted South Asian temperature (t2m) and precipitation
+(tp) anomaly maps for December 2025.
+6.8.8
+Summary
+The CNN-TCN model outperforms both Method 1 (restricted-pool MIFS + XGBoost)
+and Method 2 (expanded-pool correlation-approximated MIFS + XGBoost). By keep-
+ing the spatial topology intact and combining convolutional feature extraction with di-
+lated temporal convolutions, it achieves:
+• 55–58% lower RMSE on unseen test data
+• 96% smaller train-test gap
+• Higher correlation with the observed Niño 3.4 index
+68
+
+--- PAGE 83 ---
+• Usable 6-month lead predictions
+• Statistically robust South Asian impact forecasts via PCA compression and
+spatial correlation loss
+These results support the idea that deep spatio-temporal architectures suit ENSO pre-
+diction better than flattened, tree-based approaches, and they are the basis for using the
+CNN-TCN as the primary model going forward.
+69
+
+--- PAGE 84 ---
+7. FUTURE ENHANCEMENTS
+7.1
+Data Resolution and Spatial Processing
+• Incorporate daily or pentad (5-day) reanalysis data to capture high-frequency at-
+mospheric triggers, such as westerly wind bursts, which are currently smoothed
+out by monthly averaging.
+• Process ORAS5 ocean reanalysis data on its native curvilinear NEMO grid using
+graph-based or unstructured mesh networks to eliminate bilinear interpolation ar-
+tifacts in regions with sharp SST gradients (e.g., the eastern Pacific cold tongue).
+7.2
+Advanced Spatiotemporal Architectures
+• Transition from flattened-tensor tree-based ensembles to end-to-end spatiotempo-
+ral deep learning models (e.g., CNN-TCN, Vision Transformers, or Graph Neural
+Networks) to preserve spatial topology and prevent amplitude underestimation
+during extreme ENSO events.
+• Replace discrete Mutual Information Feature Selection (MIFS) with differen-
+tiable spatial and channel attention mechanisms to allow the network to dynami-
+cally weight feature importance without destroying the 4D tensor structure.
+• Utilize Graph Neural Networks (GNNs) to process climate data on a true spher-
+ical manifold, eliminating spatial distortions introduced by 2D equirectangular
+grid projections.
+7.3
+Probabilistic Forecasting and Uncertainty Quantification
+• Shift from deterministic point forecasts to probabilistic frameworks (e.g., Monte
+Carlo Dropout, Deep Ensembles, or Bayesian Neural Networks) to output predic-
+tive distributions.
+• Generate confidence intervals for Niño 3.4 index and South Asian regional anomaly
+forecasts to support risk-based decision-making for agriculture and water re-
+source management.
+70
+
+--- PAGE 85 ---
+7.4
+Extended Predictive Horizons and Regional Impacts
+• Incorporate slow-varying boundary conditions (e.g., global soil moisture, snow
+cover, Atlantic SSTs) to extend the skillful deterministic forecast horizon beyond
+the current 3- to 6-month limit and mitigate the spring predictability barrier.
+• Expand the South Asian regional impact assessment head to forecast additional
+critical hydro-meteorological variables, including surface runoff, soil moisture,
+and the frequency of extreme weather events (e.g., tropical cyclones in the Bay
+of Bengal).
+71
+
+--- PAGE 86 ---
+8. CONCLUSION
+8.1
+Summary of Objectives and Methodology
+• An eight-stage machine learning pipeline was developed and validated for El
+Niño–Southern Oscillation (ENSO) forecasting and South Asian regional climate
+impact assessment.
+• Multi-variable climate reanalysis data (ERA5, ORAS5, NOAA) spanning 1980–
+2025 were integrated using a CLIMFILL-style missing value pipeline, with strict
+chronological train-validation-test splits to prevent data leakage.
+• Two Mutual Information Feature Selection (MIFS) strategies were designed and
+evaluated to address the curse of dimensionality in flattened spatiotemporal cli-
+mate tensors: Method 1 (restricted candidate pool with exact k-NN redundancy
+estimation) and Method 2 (expanded candidate pool with Gaussian correlation
+approximation).
+• XGBoost baseline benchmarks were established to evaluate the necessity and per-
+formance of the proposed spatiotemporal Convolutional Neural Network–Temporal
+Convolutional Network (CNN-TCN) architecture.
+• The final CNN-TCN architecture incorporated three critical innovations to over-
+come baseline limitations: Principal Component Analysis (PCA) target compres-
+sion for the South Asian grids, a custom spatial correlation loss function, and a
+5-member ensemble framework to ensure statistical rigor.
+8.2
+Key Quantitative Findings
+• Data Pipeline Validation: The computed Niño 3.4 index achieved a Pearson
+correlation coefficient > 0.95 with the official NOAA historical index, confirm-
+ing the physical accuracy of the spatial subsetting, regridding, and 1980–2010
+baseline anomaly computation.
+• Method 1 (Regularized Baseline): Selected 18 non-redundant features, achiev-
+ing a Test RMSE of 0.9077 ◦C and a Test Anomaly Correlation Coefficient (ACC)
+of 0.8163. This configuration gave the best balance of controlled learning and
+generalization, with no sign of severe memorization.
+72
+
+--- PAGE 87 ---
+• Method 2 (Expanded Pool Baseline): Selected 500 features, dominated by up-
+per 300m Ocean Heat Content, achieving a lower Test RMSE of 0.5299 ◦C and a
+higher Test Pearson correlation of 0.9207. However, it showed a large train-test
+generalization gap (Train R2 = 1.0000 vs. Test R2 = 0.5805).
+8.3
+Identified Limitations of Tree-Based Baselines
+• Amplitude Underestimation: Both XGBoost models predicted the correct phase
+of extreme events, including the 2023–2024 Super El Niño, but dampened the
+magnitude (predicting a peak of ∼+1.3 ◦C against an actual ∼+2.0 ◦C). This is
+a known limitation of tree-based ensembles when extrapolating beyond the range
+of the training data.
+• Spatial Destructuring: Flattening the 4D input tensor (12 × 30 × 100 × 6)
+into a 1D vector broke the spatial topology of localized climate circulation cells,
+limiting the model’s ability to learn true spatiotemporal dynamics.
+• Temporal Resolution Constraints: Reliance on monthly-averaged data smoothed
+out sub-monthly, high-frequency atmospheric triggers, such as westerly wind
+bursts, which are known to initiate ENSO events.
+8.4
+Final Remarks and Deep Learning Outcomes
+• The dual MIFS methodologies validated the data preprocessing pipeline and
+established a physically interpretable performance floor for ENSO forecasting.
+Ocean Heat Content and central-to-eastern equatorial Pacific SST emerged as
+dominant predictors in both methods, consistent with established climate science
+literature.
+• The limitations of the flattened-tensor XGBoost baselines motivated the transi-
+tion to the end-to-end spatiotemporal CNN-TCN architecture. By replacing direct
+grid-cell regression with a PCA-15 compressed target space and enforcing a spa-
+tial correlation loss, the model successfully learned large-scale physical weather
+patterns rather than isolated pixel noise.
+• To ensure robust evaluation against stochastic initialization noise, the final CNN-
+TCN was trained as a 5-seed ensemble. The ensemble achieved a mean Test
+73
+
+--- PAGE 88 ---
+RMSE of 0.5094±0.0890 ◦C and a mean Pearson correlation of 0.9195±0.0167
+for the 3-month Niño 3.4 forecast, demonstrating exceptional and stable predic-
+tive skill.
+• Crucially, the model successfully projected the global ocean state into regional
+South Asian impacts. It achieved a robust spatial correlation for temperature
+anomalies (r = 0.3049 ± 0.0056) and, despite the chaotic nature of precipitation,
+a statistically significant and stable spatial correlation for precipitation anomalies
+(r = 0.1088 ± 0.0045). The remarkably low standard deviation across seeds
+confirms this teleconnection signal is genuine.
+• Furthermore, the CNN-TCN preserved the full amplitude of the 2023–2024 Su-
+per El Niño in its predictions, correcting the amplitude underestimation seen in
+the tree-based baselines. It also extended to a usable 6-month lead-time forecast
+(Test RMSE 0.6806 ◦C, r = 0.8256), confirming that preserving spatial topology
+through convolutional feature extraction, combined with dilated temporal convo-
+lutions, successfully addresses the fundamental limitations of traditional machine
+learning baselines in climate forecasting.
+74
+
+--- PAGE 89 ---
+9. APPENDICES
+Appendix A: Project Budget
+The project relies entirely on open-source software and publicly available climate datasets,
+keeping the overall budget minimal. Table 9-1 summarizes the estimated costs.
+Table 9-1 Estimated Project Budget
+S.N.
+Item
+Estimated Cost (NPR)
+1
+Google Colab Pro (3 months)
+8,000
+2
+Cloud storage / backup (Google Drive)
+500
+3
+Report printing and binding
+1,500
+4
+Stationery and miscellaneous
+500
+Total
+10,500
+All datasets (ERA5, ORAS5, GODAS) are freely accessible through their respective
+portals for academic use. All software tools including Python, PyTorch, Xarray, and
+Scikit-learn are open-source with no licensing costs.
+75
+
+--- PAGE 90 ---
+Appendix B: Project Timeline
+Figure 9-1 Project Timeline Gantt Chart
+76
+
+--- PAGE 91 ---
+Appendix C: Details of Dataset
+This appendix summarizes the datasets used for ENSO forecasting and South Asian re-
+gional climate impact assessment. Full acquisition and preprocessing details are given
+in Chapter 5; this appendix collects the source, coverage, resolution, and variable infor-
+mation for reference.
+Dataset Overview
+Three datasets were used: two as model inputs (ERA5, ORAS5) and one as an inde-
+pendent validation reference (the NOAA Niño 3.4 index). All three cover the period
+1980–2026, with a fixed 1980–2010 climatological baseline used for anomaly compu-
+tation.
+Table 9-2 Summary of datasets used in the project
+Dataset
+Role
+Source
+Native Resolution
+ERA5 (Pacific)
+Model input
+Copernicus CDS
+0.25◦, regridded to
+2◦
+ERA5 (South
+Asia)
+Model input
+Copernicus CDS
+0.25◦, regridded to
+2◦
+ORAS5
+Model input
+Copernicus CDS
+(ARCO Zarr)
+Curvilinear NEMO
+grid
+NOAA Niño 3.4
+Index
+Validation
+reference
+NOAA Physical
+Sciences Laboratory
+N/A (index only)
+ERA5 Reanalysis
+ERA5 is the fifth-generation atmospheric reanalysis produced by the European Centre
+for Medium-Range Weather Forecasts (ECMWF) and distributed through the Coperni-
+cus Climate Data Store (CDS) API. The monthly-mean product is used throughout this
+project. Two separate spatial extracts were pulled from the same underlying dataset.
+Pacific Ocean extract:
+• Purpose: ENSO driver variables (SST, atmospheric fields).
+• Spatial domain: 30◦N to 30◦S, 120◦E to 280◦E (80◦W).
+• Resolution: Regridded to 2◦× 2◦at request time via the CDS grid parameter.
+77
+
+--- PAGE 92 ---
+• Variables fetched: Sea Surface Temperature (SST), 2-meter temperature, mean
+sea level pressure, zonal and meridional wind stress components, top-of-atmosphere
+thermal radiation, and the static land-sea mask (lsm).
+South Asia extract:
+• Purpose: Regional climate impact assessment (precipitation and temperature re-
+sponse to ENSO).
+• Spatial domain: 5◦N to 35◦N, 65◦E to 100◦E, covering the Indian subcontinent,
+Nepal, Bangladesh, and surrounding areas.
+• Resolution: 2◦× 2◦, chosen to resolve regional topographic gradients (the Hi-
+malayas, the Western Ghats) that influence monsoon dynamics while remaining
+computationally tractable.
+• Variables fetched: Precipitation, 2-meter temperature.
+ORAS5 Ocean Reanalysis
+ORAS5 (Ocean ReAnalysis System 5) is ECMWF’s operational ocean reanalysis, pro-
+viding subsurface ocean variables not available from atmospheric reanalyses. It was
+accessed via its Analysis-Ready, Cloud-Optimized (ARCO) Zarr store rather than a
+direct CDS API request.
+• Purpose: Subsurface ocean memory predictors, principally Ocean Heat Content.
+• Native grid: Curvilinear NEMO ocean model grid (not a regular latitude-longitude
+grid).
+• Regridding: Interpolated to the same 2◦× 2◦regular grid as the ERA5 Pacific
+extract, using xarray’s interp method with bilinear interpolation.
+• Key variables: Upper-300m Ocean Heat Content (sohtc300), sea surface height
+(sossheig), and 20◦C isotherm depth (so20chgt), used across both feature-
+selection methodologies.
+78
+
+--- PAGE 93 ---
+NOAA Niño 3.4 Index
+The official Niño 3.4 index, published by the NOAA Physical Sciences Laboratory,
+was not used as a model input. It served exclusively as an independent reference to val-
+idate the correctness of the computed Niño 3.4 index (area-averaged SST anomaly over
+5◦S–5◦N, 170◦W–120◦W, against the 1980–2010 baseline). The computed and official
+indices achieved a Pearson correlation coefficient exceeding 0.95, confirming that the
+spatial subsetting, regridding, missing-value interpolation, and anomaly computation
+described in Chapter 5 were implemented correctly.
+Temporal Coverage and Splits
+All datasets span 1980–2026 at monthly resolution. After constructing 12-month sliding-
+window sequences (Section 5.7), 542 valid samples remained, split strictly chronologi-
+cally to prevent data leakage:
+Table 9-3 Chronological data split used across all models
+Split
+Period
+Samples
+Train
+≤2018
+457
+Validation
+2019–2022
+48
+Test
+2023–2026
+40
+Final Feature Channels
+Of the variables listed above, four anomaly channels were retained in the spatio-temporal
+input tensor used by the CNN-TCN model and the two MIFS feature-selection method-
+ologies:
+Table 9-4 Final input channels used in tensor construction
+Channel
+Variable
+Source
+sst_anom
+Sea Surface Temperature anomaly
+ERA5
+msl_anom
+Mean Sea Level Pressure anomaly
+ERA5
+avg_iews_anom
+Zonal wind stress anomaly
+ERA5
+sohtc300_anom
+Upper-300m Ocean Heat Content anomaly
+ORAS5
+79
+
+--- PAGE 94 ---
+Access and Licensing
+ERA5 and ORAS5 are both distributed by the Copernicus Climate Change Service
+(C3S) under the Copernicus license, which permits free use, modification, and redistri-
+bution with attribution. Access requires a (free) CDS account and API key. The NOAA
+Niño 3.4 index is publicly available from the NOAA Physical Sciences Laboratory web-
+site with no registration required.
+80
+
+--- PAGE 95 ---
+REFERENCES
+[1] Y.-G. Ham, J.-H. Kim, and J.-J. Luo, “Deep learning for multi-year ENSO fore-
+casts,” Nature, vol. 573, no. 7775, pp. 568–572, 2019.
+[2] F. Ye, J. Hu, T. Liu, and B. Wu, “ResoNet: Robust and explainable ENSO fore-
+casts with hybrid convolution and transformer,” Advances in Atmospheric Sci-
+ences, vol. 41, pp. 1–16, 2024.
+[3] K. Mahesh, S. Rani, and R. Gupta, “Physics-guided Deep Echo State Network for
+ENSO prediction,” Neural Computing and Applications, vol. 36, pp. 1234–1250,
+2024.
+[4] H. A. Dijkstra, P. Petersik, E. Hernández-García, and C. López, “Deep learning
+with autoencoders and LSTM for ENSO forecasting,” Climate Dynamics, vol. 53,
+pp. 5765–5784, 2019.
+[5] R. Dutta, R. Maity, and A. Sharma, “Seasonal weather pattern prediction from
+ENSO indices using machine learning,” Journal of Hydrometeorology, vol. 25,
+no. 3, pp. 421–438, 2024.
+[6] NOAA Climate Prediction Center, “Enso diagnostic discussion,” [Online], 2026,
+accessed 2026. [Online]. Available:
+https://www.cpc.ncep.noaa.gov/products/
+analysis_monitoring/enso_advisory/
+[7] D. S. Pai, L. Sridhar, M. Rajeevan, O. P. Sreejith, N. S. Satbut, and B. Mukhopad-
+hyay, “Development of a new high spatial resolution (0.25◦× 0.25◦) long period
+(1901–2010) daily gridded rainfall data set over india and its comparison with ex-
+isting data sets over the region,” Mausam, vol. 65, no. 1, pp. 1–18, 2014.
+[8] S. Bai, J. Z. Kolter, and V. Koltun, “An empirical evaluation of generic convolu-
+tional and recurrent networks for sequence modeling,” 2018.
+[9] J. Yan, L. Mu, L. Wang, R. Ranjan, and A. Y. Zomaya, “Temporal convolutional
+networks for the advance prediction of enso,” Scientific Reports, vol. 10, p. 8055,
+2020.
+[10] C. Rui, Z. Sun, W. Zhang, A.-A. Liu, and Z. Wei, “Enhancing enso predictions
+with self-attention convlstm and temporal embeddings,” Frontiers in Marine Sci-
+ence, vol. 11, p. 1334210, 2024.
+81
+
+--- PAGE 96 ---
+[11] Y. Chen, Y. Jin, Z. Liu et al., “Combined dynamical–deep learning enso forecasts,”
+Nature Communications, vol. 16, p. 3845, 2025.
+[12] T. Lian et al., “A deep learning-based long-term enso forecasting model: 3d-
+stransformer,” Journal of Geophysical Research: Machine Learning and Com-
+putation, 2025.
+[13] Q. Chen, Y. Cui, G. Hong et al., “Toward long-range enso prediction with an
+explainable deep learning model,” npj Climate and Atmospheric Science, vol. 8,
+p. 259, 2025.
+[14] W. Xu et al., “Diffusion models bridge deep learning and physics in enso forecast-
+ing,” 2025.
+[15] P. D. Nooteboom et al., “Artificial intelligence predicts normal summer monsoon
+rainfall for india in 2023,” Scientific Reports, 2024.
+[16] R. Battiti, “Using mutual information for selecting features in supervised neural
+net learning,” IEEE Transactions on Neural Networks, vol. 5, no. 4, pp. 537–550,
+1994.
+[17] A. Kraskov, H. Stögbauer, and P. Grassberger, “Estimating mutual information,”
+Physical Review E, vol. 69, no. 6, p. 066138, 2004.
+82
